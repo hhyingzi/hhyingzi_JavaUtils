@@ -1,3 +1,5 @@
 /bin/
 /testFiles/
 .project
+.class
+.settings/
