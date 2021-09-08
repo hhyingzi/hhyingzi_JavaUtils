@@ -1,7 +1,7 @@
 package MyJavaUtils;
-/* ÊÕ×÷ÒµÅúÁ¿¸ü¸ÄÎÄ¼şÃû£¬´Ó oldFileName ÖĞ¶ÁÈ¡µ½ ĞÕÃû£¬Ñ§ºÅ£¬´´Òµ°à£¬×÷ÒµÏêÇé£¬È»ºó°´¸ñÊ½¹éÀà
- * 1.Êä³ö¸ü¸ÄÔ¤ÀÀ
- * 2.ÌáÊ¾ÊäÈë y È·ÈÏ¸ü¸Ä£¬ÊäÈë n »òÖ±½ÓÍË³öÈ¡Ïû¸ü¸Ä¡£
+/* æ”¶ä½œä¸šæ‰¹é‡æ›´æ”¹æ–‡ä»¶åï¼Œä» oldFileName ä¸­è¯»å–åˆ° å§“åï¼Œå­¦å·ï¼Œåˆ›ä¸šç­ï¼Œä½œä¸šè¯¦æƒ…ï¼Œç„¶åæŒ‰æ ¼å¼å½’ç±»
+ * 1.è¾“å‡ºæ›´æ”¹é¢„è§ˆ
+ * 2.æç¤ºè¾“å…¥ y ç¡®è®¤æ›´æ”¹ï¼Œè¾“å…¥ n æˆ–ç›´æ¥é€€å‡ºå–æ¶ˆæ›´æ”¹ã€‚
 */
 
 
@@ -10,26 +10,26 @@ import java.io.File;
 import java.util.ArrayList;
 
 public class ChangeFileName{
-    private static final String dirPath = "D:\\code\\JAVA\\WHJ_JavaUtils\\testFiles\\Ãûµ¥";
-    private File[] fileList; //ËùÓĞÎÄ¼ş
+    private static final String dirPath = "D:\\code\\JAVA\\WHJ_JavaUtils\\testFiles\\åå•";
+    private File[] fileList; //æ‰€æœ‰æ–‡ä»¶
 
-    private String[] stuNoList; //Ñ§ºÅ
-    private String[] stuNameList; //ĞÕÃû
-    private String[] classNameList; //°à¼¶
-    private String[] jobNameList; //×÷ÒµÃû
-    private String[] fileSuffixList; //ÎÄ¼şºó×ºÃû
-    private String[] newFileNameList; //ĞÂÎÄ¼şÃû
+    private String[] stuNoList; //å­¦å·
+    private String[] stuNameList; //å§“å
+    private String[] classNameList; //ç­çº§
+    private String[] jobNameList; //ä½œä¸šå
+    private String[] fileSuffixList; //æ–‡ä»¶åç¼€å
+    private String[] newFileNameList; //æ–°æ–‡ä»¶å
     
-    //¹¹Ôìº¯Êı
+    //æ„é€ å‡½æ•°
     public ChangeFileName(){}
 
-    //Ö´ĞĞÈë¿Ú
+    //æ‰§è¡Œå…¥å£
     public void run(){
         getFiles();
         
-        //ÌáÊ¾ÊÇ·ñ²Ù×÷
+        //æç¤ºæ˜¯å¦æ“ä½œ
         Scanner scanner = new Scanner(System.in);
-        System.out.println("ÊÇ·ñÖ´ĞĞÖØÃüÃû£¿ ÊäÈë¡°1¡±Ö´ĞĞ£¬·ñÔòÊäÈë¡°2¡±»òÍË³ö´°¿Ú¡£");
+        System.out.println("æ˜¯å¦æ‰§è¡Œé‡å‘½åï¼Ÿ è¾“å…¥â€œ1â€æ‰§è¡Œï¼Œå¦åˆ™è¾“å…¥â€œ2â€æˆ–é€€å‡ºçª—å£ã€‚");
         try{
             if(scanner.nextInt()==1)
             renameFiles();
@@ -39,18 +39,18 @@ public class ChangeFileName{
         }
     }
 
-    //¶ÁÈ¡Ä¿Â¼ÏÂËùÓĞÎÄ¼ş£¬²¢Ö´ĞĞ½âÎö
+    //è¯»å–ç›®å½•ä¸‹æ‰€æœ‰æ–‡ä»¶ï¼Œå¹¶æ‰§è¡Œè§£æ
     private void getFiles(){
         File dir = new File(dirPath);
         if(!dir.isDirectory()){
-            System.out.println("ÎÄ¼ş¼ĞÂ·¾¶ÓĞÎó");
+            System.out.println("æ–‡ä»¶å¤¹è·¯å¾„æœ‰è¯¯");
             System.exit(0);
         }
 
-        //³õÊ¼»¯¸÷³ÉÔ±±äÁ¿µÄÊı×é
+        //åˆå§‹åŒ–å„æˆå‘˜å˜é‡çš„æ•°ç»„
         fileList = dir.listFiles();
         if(fileList==null) {
-            System.out.println("Ã»ÓĞÎÄ¼ş");
+            System.out.println("æ²¡æœ‰æ–‡ä»¶");
             System.exit(0);
         }
         stuNoList = new String[fileList.length];
@@ -63,7 +63,7 @@ public class ChangeFileName{
         for(int i=0; i<fileList.length; i++){
             parseFilesDetail(i);
             if(fileList[i].getName().equals(newFileNameList[i])){
-                System.out.println("ÎŞĞèĞŞ¸Ä¡£");
+                System.out.println("æ— éœ€ä¿®æ”¹ã€‚");
             }
             else{
                 System.out.println(fileList[i].getName() + " -> " + newFileNameList[i]);
@@ -71,37 +71,37 @@ public class ChangeFileName{
         }
     }
 
-    //½âÎöµ¥¸öÎÄ¼ş£¬²¢×é×°³ÉĞÂÎÄ¼şÃû
+    //è§£æå•ä¸ªæ–‡ä»¶ï¼Œå¹¶ç»„è£…æˆæ–°æ–‡ä»¶å
     private void parseFilesDetail(int index){
-        //½âÎö¡£¡£¡£
+        //è§£æã€‚ã€‚ã€‚
 
-        //¹¹ÔìĞÂÎÄ¼şÃû
+        //æ„é€ æ–°æ–‡ä»¶å
         ArrayList<String> params = new ArrayList<String>();
-        if(stuNoList[index] != null || stuNoList[index] != "") params.add(stuNoList[index]); //Ñ§ºÅ
-        if(stuNameList[index] != null || stuNameList[index] != "") params.add(stuNameList[index]); //ĞÕÃû
-        if(classNameList[index] != null || classNameList[index] != "") params.add(classNameList[index]); //°à¼¶
-        if(jobNameList[index] != null || jobNameList[index] != "") params.add(jobNameList[index]); //×÷ÒµÃû
-        if(fileSuffixList[index] != null || fileSuffixList[index] != "") params.add(fileSuffixList[index]); //ºó×º
+        if(stuNoList[index] != null || stuNoList[index] != "") params.add(stuNoList[index]); //å­¦å·
+        if(stuNameList[index] != null || stuNameList[index] != "") params.add(stuNameList[index]); //å§“å
+        if(classNameList[index] != null || classNameList[index] != "") params.add(classNameList[index]); //ç­çº§
+        if(jobNameList[index] != null || jobNameList[index] != "") params.add(jobNameList[index]); //ä½œä¸šå
+        if(fileSuffixList[index] != null || fileSuffixList[index] != "") params.add(fileSuffixList[index]); //åç¼€
         newFileNameList[index] = String.join("-", params);
     }
 
-    //ÖØÃüÃûËùÓĞÎÄ¼ş£ºÑ§ºÅ-ĞÕÃû-°à¼¶-×÷ÒµÃû-ºó×º
+    //é‡å‘½åæ‰€æœ‰æ–‡ä»¶ï¼šå­¦å·-å§“å-ç­çº§-ä½œä¸šå-åç¼€
     private void renameFiles(){
         for(int i=0; i<fileList.length; i++){
-            //ÖØÃüÃû²¢´¦ÀíÒì³£
+            //é‡å‘½åå¹¶å¤„ç†å¼‚å¸¸
             try{
                 boolean isOk = fileList[i].renameTo(new File(dirPath + "\\" + newFileNameList[i]));
                 if(isOk){
-                    System.out.println(newFileNameList[i]); //ĞŞ¸Ä³É¹¦£¬ÏÔÊ¾ĞÂÎÄ¼şÃû¡£
+                    System.out.println(newFileNameList[i]); //ä¿®æ”¹æˆåŠŸï¼Œæ˜¾ç¤ºæ–°æ–‡ä»¶åã€‚
                 }
             }
             catch(SecurityException e){
-                System.out.println(fileList[i].getName() + " ÖØÃüÃûÊ§°Ü¡£" + e.getMessage()); //´ıÈ·¶¨
+                System.out.println(fileList[i].getName() + " é‡å‘½åå¤±è´¥ã€‚" + e.getMessage()); //å¾…ç¡®å®š
             }
             catch(NullPointerException e){
-                System.out.println(fileList[i].getName() + " Î´½âÎö³öÎÄ¼şÃû£¬´úÂëbug¡£"); //´ıÈ·¶¨
+                System.out.println(fileList[i].getName() + " æœªè§£æå‡ºæ–‡ä»¶åï¼Œä»£ç bugã€‚"); //å¾…ç¡®å®š
             }
         }
-        System.out.println("ÖØÃüÃûÍê³É");
+        System.out.println("é‡å‘½åå®Œæˆ");
     }
 }
