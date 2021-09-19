@@ -5,6 +5,7 @@ package MyJavaUtils;
 */
 
 
+import java.util.List;
 import java.util.Scanner;
 import java.io.File;
 import java.util.ArrayList;
@@ -76,7 +77,7 @@ public class ChangeFileName{
         //解析。。。
 
         //构造新文件名
-        ArrayList<String> params = new ArrayList<String>();
+        List<String> params = new ArrayList<>();
         if(stuNoList[index] != null || stuNoList[index] != "") params.add(stuNoList[index]); //学号
         if(stuNameList[index] != null || stuNameList[index] != "") params.add(stuNameList[index]); //姓名
         if(classNameList[index] != null || classNameList[index] != "") params.add(classNameList[index]); //班级
