@@ -1,19 +1,18 @@
 package MyJavaUtils;
 
 /**
- * ³ÌÐòÔËÐÐÊ±¼ä¼ÆÊ±Æ÷
- * Í³¼ÆÁ½´ÎºÁÃëµ¥Î»µÄ¾ø¶ÔÊ±¼ä£¨ºÁÃë£©£¬Ïà¼õºó³ýÒÔ1000.0£¬µÃµ½ÔËÐÐÊ±¼ä£¨Ãë£©
+ * ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ê±ï¿½ï¿½ï¿½Ê±ï¿½ï¿½
+ * Í³ï¿½ï¿½ï¿½ï¿½ï¿½Îºï¿½ï¿½ëµ¥Î»ï¿½Ä¾ï¿½ï¿½ï¿½Ê±ï¿½ä£¨ï¿½ï¿½ï¿½ë£©ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½1000.0ï¿½ï¿½ï¿½Ãµï¿½ï¿½ï¿½ï¿½ï¿½Ê±ï¿½ä£¨ï¿½ë£©
  */
 public class Stopwatch {
 	private long start;
 	public void start() {
 		start = System.currentTimeMillis();
-		System.out.println("Program Running...");
+		System.out.println("Start...");
 	}
 	
 	public void end() {
 		long end = System.currentTimeMillis();
-		System.out.println("Finished! ");
-		System.out.println("Time used " + (end-start)/1000.0);
+		System.out.println("Finished! Time used " + (end-start)/1000.0);
 	}
 }
