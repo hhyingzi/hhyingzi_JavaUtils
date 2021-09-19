@@ -2,7 +2,7 @@ import JavaDataStructure.*;
 import MyJavaUtils.*;
 
 
-public class Main {
+public class StartProject {
 
 	public static void main(String[] args) {
 		Stopwatch watch = new Stopwatch();
