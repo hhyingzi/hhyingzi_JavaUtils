@@ -1,6 +1,4 @@
-package MyJavaUtils;
-
-import java.util.Scanner;
+package TempProject;
 
 /*
 * Yeah数列

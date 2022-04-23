@@ -1,4 +1,4 @@
-package MyJavaUtils;
+package TempProject;
 
 public class Solution {
     public void run(){

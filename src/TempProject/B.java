@@ -1,4 +1,4 @@
-package MyJavaUtils;
+package TempProject;
 
 public class B {
     public static B t1 = new B();

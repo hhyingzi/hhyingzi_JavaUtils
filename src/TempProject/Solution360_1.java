@@ -1,6 +1,5 @@
-package MyJavaUtils;
+package TempProject;
 
-import java.util.Arrays;
 import java.util.Scanner;
 /*
 * 请使用标准输入输出(System.in, System.out)；

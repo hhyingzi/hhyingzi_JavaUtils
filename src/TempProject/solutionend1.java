@@ -1,10 +1,4 @@
-package MyJavaUtils;
-import JavaDataStructure.*;
-import MyJavaUtils.*;
-
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Scanner;
+package TempProject;
 
 public class solutionend1 {
 

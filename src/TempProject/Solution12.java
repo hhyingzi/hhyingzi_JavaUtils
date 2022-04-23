@@ -1,4 +1,4 @@
-package MyJavaUtils;
+package TempProject;
 
 public class Solution12 { //大小写转换
     public static void main(String[] args){

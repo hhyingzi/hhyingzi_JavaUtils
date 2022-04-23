@@ -1,4 +1,4 @@
-package JavaDataStructure;
+package MyDataStructure;
 
 public class MyArray {
 

@@ -1,4 +1,4 @@
-package MyJavaUtils;
+package TempProject;
 //思路：X -> H 相差为 diff
 //如果 X == H
 //如果 X > H, X-1 直到相等。使用while

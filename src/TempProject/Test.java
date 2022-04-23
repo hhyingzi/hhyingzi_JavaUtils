@@ -1,8 +1,6 @@
-package MyJavaUtils;
+package TempProject;
 
 import java.lang.reflect.Method;
-
-import static com.sun.org.apache.xalan.internal.xsltc.compiler.util.Type.String;
 
 public class Test {
     public static void main(String[] args) throws Exception{

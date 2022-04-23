@@ -1,4 +1,4 @@
-package MyJavaUtils;
+package TempProject;
 /* 收作业批量更改文件名，从 oldFileName 中读取到 姓名，学号，创业班，作业详情，然后按格式归类
  * 1.输出更改预览
  * 2.提示输入 y 确认更改，输入 n 或直接退出取消更改。
