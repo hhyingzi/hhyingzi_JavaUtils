@@ -1,6 +1,8 @@
 package MyDataStructure.Sort;
 
 import java.util.Arrays;
+import java.util.Random;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 class TestSortInt extends MyBubbleSort {
@@ -25,16 +27,35 @@ class TestSortInt extends MyBubbleSort {
     @org.junit.jupiter.api.Test
     void testSortTrue() {
         System.out.println("***** Sort Test True. *****");
-        //test1
-        int[] trueData1 = new int[]{1, 3, 2, -4, 4, 6, 5};
-        int[] expected1 = new int[]{-4, 1, 2, 3, 4, 5, 6};
+        //test1，原数组是正确的
+        int[] trueData1 = new int[]{1, 2, 3, 4, 5, 6, 7};
+        int[] expected1 = new int[]{1, 2, 3, 4, 5, 6, 7};
         testTrueAndShow(trueData1, expected1);
 
-        //test2
-        int[] trueData2 = new int[]{9, 8, 7, 7, 4, 5, 6};
-        int[] expected2 = new int[]{4, 5, 6, 7, 7, 8, 9};
+        //test2，原数组是相同元素
+        int[] trueData2 = new int[]{1, 1, 1, 1, 1};
+        int[] expected2 = new int[]{1, 1, 1, 1, 1};
         testTrueAndShow(trueData2, expected2);
 
+        //test3，逆序数组测试
+        int[] trueData3 = new int[]{7, 6, 5, 4, 3, 2, 1};
+        int[] expected3 = new int[]{1, 2, 3, 4, 5, 6, 7};
+        testTrueAndShow(trueData3, expected3);
+
+        //test random
+        System.out.println("---Random test---");
+        int groupNum = 10, arrLength = 10;  //测试10次随机序列，每个序列生成20个随机元素
+        for(int i=0; i<groupNum; i++){
+            int[] randomData = new int[arrLength];
+            int[] expectedData = new int[arrLength];
+            Random random = new Random();
+            for(int j=0; j < arrLength; j++){
+                randomData[j] = random.nextInt(20) - 10;
+                expectedData[j] = randomData[j];
+            }
+            Arrays.sort(expectedData);
+            testTrueAndShow(randomData, expectedData);
+        }
 
         System.out.println("***** sort test True successed. *****");
     }
@@ -43,12 +64,12 @@ class TestSortInt extends MyBubbleSort {
     void testTrueAndShow(int[] arr, int[] expected){
         System.out.print(Arrays.toString(arr)); //输出排序前的数组
         getSolution(arr);  //对数组进行排序
-        assertArrayEquals(expected, arr);  //检验排序结果
         System.out.println(" -> " + Arrays.toString(arr));  //输出排序后的结果
+        assertArrayEquals(expected, arr);  //检验排序结果
     }
 
     //调用源代码的排序函数（默认直接对原数组进行排序）
     void getSolution(int[] arr) {
-        MySelectionSort.testSort(arr);
+        MyMaxPriorityQueues.testSort(arr);
     }
 }
