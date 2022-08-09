@@ -8,38 +8,38 @@ import java.util.*;
  * 节点k的父节点：arr[(k-1)/2]
  * 节点k的左右孩子：arr[k*2+1], arr[k*2+2]
  */
-public class MyBinaryTree {
+public class MyBinaryTreeStringNode {
     public BinNode root;
     public int size;
     private boolean dataWrong = false;
     private int treeDepth; //树最大深度，用来辅助二叉树绘图，可删除
 
     public class BinNode {
-        public int data;
+        public String data;
         public BinNode leftChild;
         public BinNode rightChild;
         public int nodeDepth;  //节点深度，用来辅助二叉树绘图，可删除
 
         public BinNode(){}
-        public BinNode(int data){this.data = data;}
-        public BinNode(int data, BinNode leftChild, BinNode rightChild){
+        public BinNode(String data){this.data = data;}
+        public BinNode(String data, BinNode leftChild, BinNode rightChild){
             this.data = data;
             this.leftChild = leftChild;
             this.rightChild = rightChild;
         }
     }
     //手动创建节点
-    public void createNewNode(int data){
+    public void createNewNode(String data){
         BinNode newNode = new BinNode();
         newNode.data = data;
     }
-    public void createNewNode(int data, BinNode leftChild, BinNode rightChild){
+    public void createNewNode(String data, BinNode leftChild, BinNode rightChild){
         BinNode newNode = new BinNode();
         newNode.data = data;
         newNode.leftChild = leftChild;
         newNode.rightChild = rightChild;
     }
-    public ArrayList<Integer> resultNodeArray = new ArrayList<>();
+    public ArrayList<String> resultNodeArray = new ArrayList<String>();
 
     public void visit(BinNode node) {
         //System.out.println(node.data);
@@ -47,7 +47,7 @@ public class MyBinaryTree {
     }
 
     //传入一个数组，根据层次结构，建立完全二叉树（一定是完全二叉树，否则不能通过层次结构确定唯一结构）
-    public void initFromLevel(int[] arr) {
+    public void initFromLevel(String[] arr) {
         if (arr == null || arr.length == 0) return;
         ArrayList<BinNode> nodeList = new ArrayList<>();
         //把每个元素都转化成节点
@@ -65,19 +65,19 @@ public class MyBinaryTree {
     }
 
     //根据先序+中序 建立这棵二叉树
-    public void initFromPreIn(int[] arrPre, int[] arrIn) {
+    public void initFromPreIn(String[] arrPre, String[] arrIn) {
         dataWrong = false;
         //输入为空的情况下，建立空的二叉树。
         if(arrPre == null && arrIn == null) return;
-        //正常建立二叉树，获取树根并赋值给类的 root 成员变量。
+            //正常建立二叉树，获取树根并赋值给类的 root 成员变量。
         else this.root = assistInitFromPreIn(arrPre, 0, arrPre.length-1, arrIn, 0, arrIn.length-1);
         //检测构造过程中是否出现错误
         if(dataWrong) System.out.println("输入数据有误，无法构建二叉树。");
     }
 
     //传入先序遍历输入数组 arrPrep[indexPreHead, indexPreTail]，中序遍历输入数组 arrIn(indexInHead, indexInTail]，找出父节点并实例化，然后连接上左右节点。返回该父节点。
-    private BinNode assistInitFromPreIn(int[] arrPre, int indexPreHead, int indexPreTail,
-                                     int[] arrIn, int indexInHead, int indexInTail){
+    private BinNode assistInitFromPreIn(String[] arrPre, int indexPreHead, int indexPreTail,
+                                        String[] arrIn, int indexInHead, int indexInTail){
         BinNode parentNode = new BinNode();
         //之前计算检测到错误，或输入的先序中序数组长度不同，则无法构建子树，直接返回
         if(dataWrong || indexPreTail - indexPreHead != indexInTail - indexInHead){
@@ -124,19 +124,19 @@ public class MyBinaryTree {
     }
 
     //根据中序+后序，建立这棵二叉树
-    public void initFromInPost(int[] arrIn, int[] arrPost) {
+    public void initFromInPost(String[] arrIn, String[] arrPost) {
         dataWrong = false;
         //输入为空的情况下，建立空的二叉树。
         if(arrIn == null && arrPost == null) return;
-        //正常建立二叉树，获取树根并赋值给类的 root 成员变量。
+            //正常建立二叉树，获取树根并赋值给类的 root 成员变量。
         else this.root = assistInitFromInPost(arrIn, 0, arrIn.length-1, arrPost, 0, arrPost.length-1);
         //检测构造过程中是否出现错误
         if(dataWrong) System.out.println("输入数据有误，无法构建二叉树。");
     }
 
     //传入中序遍历输入数组 arrIn[indexInHead, indexInTail]，后序遍历输入数组 arrPost(indexPostHead, indexPostTail]，找出父节点并实例化，然后连接上左右节点。返回该父节点。
-    private BinNode assistInitFromInPost(int[] arrIn, int indexInHead, int indexInTail,
-                                        int[] arrPost, int indexPostHead, int indexPostTail){
+    private BinNode assistInitFromInPost(String[] arrIn, int indexInHead, int indexInTail,
+                                         String[] arrPost, int indexPostHead, int indexPostTail){
         BinNode parentNode = new BinNode();
         //之前计算检测到错误，或输入的先序中序数组长度不同，则无法构建子树，直接返回
         if(dataWrong || indexInTail - indexInHead != indexPostTail - indexPostHead){
@@ -281,11 +281,11 @@ public class MyBinaryTree {
     }
 
     //深度优先遍历（先序遍历迭代版）。若要改为搜索，只需加一个 boolean 类型的成员变量 ifSearched ,在 visit() 中判断是否已经找到。
-    public void dfs(int value) {
+    public void dfs(String value) {
         preOrderIter(this.root);
     }
     //广度优先搜索（层次遍历迭代版）。若要改为搜索，只需加一个 boolean 类型的成员变量 ifSearched ,在 visit() 中判断是否已经找到。
-    public void bfs(int value) {
+    public void bfs(String value) {
         leverOrder(this.root);
     }
 
@@ -293,30 +293,30 @@ public class MyBinaryTree {
         this.resultNodeArray.clear();
     }
 
-    public Integer[] printTravelResult() {
+    public String[] printTravelResult() {
         //返回遍历结果
         //层次遍历
         leverOrder(this.root);
-        System.out.println("层次遍历：" + Arrays.toString(resultNodeArray.toArray(new Integer[resultNodeArray.size()])));
+        System.out.println("层次遍历：" + Arrays.toString(resultNodeArray.toArray(new String[resultNodeArray.size()])));
         cleanResultArray();
 
         //先序遍历
         preOrderRecur(this.root);  //递归版
 //        preOrderIter(myTree.root);  //迭代版
-        System.out.println("先序遍历：" + Arrays.toString(resultNodeArray.toArray(new Integer[resultNodeArray.size()])));
+        System.out.println("先序遍历：" + Arrays.toString(resultNodeArray.toArray(new String[resultNodeArray.size()])));
         cleanResultArray();
         //中序遍历
         inOrderRecur(this.root);  //递归版
 //        myTree.inOrderIter(myTree.root);  //迭代版
-        System.out.println("中序遍历：" + Arrays.toString(resultNodeArray.toArray(new Integer[resultNodeArray.size()])));
+        System.out.println("中序遍历：" + Arrays.toString(resultNodeArray.toArray(new String[resultNodeArray.size()])));
         cleanResultArray();
         //后序遍历
         postOrderRecur(this.root);  //递归版
 //        myTree.postOrderIter(myTree.root);  //迭代版
-        System.out.println("后序遍历：" + Arrays.toString(resultNodeArray.toArray(new Integer[resultNodeArray.size()])));
+        System.out.println("后序遍历：" + Arrays.toString(resultNodeArray.toArray(new String[resultNodeArray.size()])));
         cleanResultArray();
 
-        return resultNodeArray.toArray(new Integer[resultNodeArray.size()]);
+        return resultNodeArray.toArray(new String[resultNodeArray.size()]);
     }
 
     //根据完全二叉树的节点数组做图
@@ -331,8 +331,8 @@ public class MyBinaryTree {
             boolean isFirstCol = true;
             for (int col = 1; col <= Math.pow(2, row - 1); col++) {
                 if (index > resultNodeArray.size() - 1) break outloop;
-                if(isFirstCol) System.out.format("%"+ 4 * (int)Math.pow(2, maxRow-row) / 2 +"d", resultNodeArray.get(index++));
-                else System.out.format("%"+ 4 * (int)Math.pow(2, maxRow-row) +"d", resultNodeArray.get(index++));
+                if(isFirstCol) System.out.format("%"+ 4 * (int)Math.pow(2, maxRow-row) / 2 +"s", resultNodeArray.get(index++));
+                else System.out.format("%"+ 4 * (int)Math.pow(2, maxRow-row) +"s", resultNodeArray.get(index++));
                 isFirstCol = false;
             }
             System.out.println();
@@ -366,14 +366,14 @@ public class MyBinaryTree {
             if(node.leftChild != null) queue.addLast(node.leftChild);  //左孩子入队尾
             else if(node.nodeDepth < this.treeDepth) {  //空孩子只要不是树的最后一层，都创建一个 -99 的节点。
                 BinNode nullNode = new BinNode();
-                nullNode.data = -99;
+                nullNode.data = "null";
                 nullNode.nodeDepth = node.nodeDepth + 1;
                 queue.addLast(nullNode);
             }
             if(node.rightChild != null) queue.addLast(node.rightChild);  //右孩子入队尾
             else if(node.nodeDepth < this.treeDepth) {  //空孩子只要不是树的最后一层，都创建一个 -99 的节点。
                 BinNode nullNode = new BinNode();
-                nullNode.data = -99;
+                nullNode.data = "null";
                 nullNode.nodeDepth = node.nodeDepth + 1;
                 queue.addLast(nullNode);
             }
@@ -383,7 +383,6 @@ public class MyBinaryTree {
     //根据节点做二叉树图，其中将 -99 替换为 空字符串
     public void drawTreeNode() {
         calTreeDepth(root, 1);
-        System.out.println("The tree`s max depth is: " + treeDepth);
         leverOrderDraw(this.root);  //用于绘图的层次遍历，将空节点记录为-99。
         //根据 this.resultNodeArray() 中的层次遍历结果进行做图
         int index = 0;
@@ -394,13 +393,13 @@ public class MyBinaryTree {
             boolean isFirstCol = true;
             for (int col = 1; col <= Math.pow(2, row - 1); col++) {
                 if (index > resultNodeArray.size() - 1) break outloop;
-                int nextPrintNodeDate = resultNodeArray.get(index++);
+                String nextPrintNodeDate = resultNodeArray.get(index++);
                 if(isFirstCol) {
-                    if(nextPrintNodeDate != -99) System.out.format("%"+ 4 * (int)Math.pow(2, maxRow-row) / 2 +"d", nextPrintNodeDate);
+                    if(nextPrintNodeDate != "null") System.out.format("%"+ 4 * (int)Math.pow(2, maxRow-row) / 2 +"s", nextPrintNodeDate);
                     else System.out.format("%"+ 4 * (int)Math.pow(2, maxRow-row) / 2 +"s", "");
                 }
                 else {
-                    if(nextPrintNodeDate != -99) System.out.format("%"+ 4 * (int)Math.pow(2, maxRow-row) +"d", nextPrintNodeDate);
+                    if(nextPrintNodeDate != "null") System.out.format("%"+ 4 * (int)Math.pow(2, maxRow-row) +"s", nextPrintNodeDate);
                     else System.out.format("%"+ 4 * (int)Math.pow(2, maxRow-row) +"s", "");
                 }
                 isFirstCol = false;
@@ -410,7 +409,7 @@ public class MyBinaryTree {
     }
 
     //测试使用层序构造二叉树
-    public void testInitFromLevel(int[] arr){
+    public void testInitFromLevel(String[] arr){
         System.out.println("==========");
         System.out.println("原始数据： " + Arrays.toString(arr));
         initFromLevel(arr);
@@ -422,7 +421,7 @@ public class MyBinaryTree {
     }
 
     //测试使用先序+中序构造二叉树
-    public void testInitFromPreIn(int[] arrPre, int[] arrIn){
+    public void testInitFromPreIn(String[] arrPre, String[] arrIn){
         System.out.println("==========");
         System.out.println("原始数据： " + "先序 " + Arrays.toString(arrPre) + "  中序 " + Arrays.toString(arrIn));
         initFromPreIn(arrPre, arrIn);
@@ -430,7 +429,7 @@ public class MyBinaryTree {
         printTravelResult();
     }
 
-    public void testInitFromInPost(int[] arrIn, int[] arrPost){
+    public void testInitFromInPost(String[] arrIn, String[] arrPost){
         System.out.println("==========");
         System.out.println("原始数据： " + "中序 " + Arrays.toString(arrIn) + "  后序 " + Arrays.toString(arrPost));
         initFromInPost(arrIn, arrPost);
@@ -438,42 +437,50 @@ public class MyBinaryTree {
         printTravelResult();
     }
 
+    public void testInitFromNode(){
+        System.out.println("==========");
+        System.out.println("根据自定义节点构建二叉树。");
+        //输出层序，中序，后序遍历结果
+        printTravelResult();
+    }
+
     public static void main(String[] args) {
         //通过 层次 遍历数组构造二叉树
-        int[] arr1 = new int[7];
+        String[] arr1 = new String[7];
         for (int i=0; i<arr1.length; i++){
-            arr1[i] = i+1;
+            arr1[i] = "" + i;
         }
-        MyBinaryTree myLevelTree1 = new MyBinaryTree();
+        MyBinaryTreeStringNode myLevelTree1 = new MyBinaryTreeStringNode();
         myLevelTree1.testInitFromLevel(arr1);
 
         //通过 先序+中序 遍历数组构造二叉树
-        int[] arrPre2 = new int[]{1, 2, 4, 5, 3, 6, 7};
-        int[] arrIn2 = new int[]{4, 2, 5, 1, 6, 3, 7};
-        MyBinaryTree myPreInTree2 = new MyBinaryTree();
+        String[] arrPre2 = new String[]{"A", "B", "D", "E", "C", "F", "G"};
+        String[] arrIn2 = new String[]{"D", "B", "E", "A", "F", "C", "G"};
+        MyBinaryTreeStringNode myPreInTree2 = new MyBinaryTreeStringNode();
         myPreInTree2.testInitFromPreIn(arrPre2, arrIn2);
         //画出二叉树图案
         myPreInTree2.drawTreeArray();
         myPreInTree2.cleanResultArray();
 
         //通过 中序+后序 遍历数组构造二叉树
-        int[] arrIn3 = new int[]{4, 2, 5, 1, 6, 3, 7};
-        int[] arrPost3 = new int[]{4, 5, 2, 6, 7, 3, 1};
-        MyBinaryTree myPreInTree3 = new MyBinaryTree();
+        String[] arrIn3 = new String[]{"D", "B", "E", "A", "F", "C", "G"};
+        String[] arrPost3 = new String[]{"D", "E", "B", "F", "G", "C", "A"};
+        MyBinaryTreeStringNode myPreInTree3 = new MyBinaryTreeStringNode();
         myPreInTree3.testInitFromInPost(arrIn3, arrPost3);
         //画出二叉树图案
         myPreInTree3.drawTreeArray();
         myPreInTree3.cleanResultArray();
 
         //通过自定义节点构造二叉树
-        MyBinaryTree myNodeTree4 = new MyBinaryTree();
-        MyBinaryTree.BinNode f = myNodeTree4.new BinNode(1112);
-        MyBinaryTree.BinNode e = myNodeTree4.new BinNode(122);
-        MyBinaryTree.BinNode d = myNodeTree4.new BinNode(111, null, f);
-        MyBinaryTree.BinNode c = myNodeTree4.new BinNode(12, null, e);
-        MyBinaryTree.BinNode b = myNodeTree4.new BinNode(11, d, null);
-        MyBinaryTree.BinNode a = myNodeTree4.new BinNode(1, b, c);
+        MyBinaryTreeStringNode myNodeTree4 = new MyBinaryTreeStringNode();
+        MyBinaryTreeStringNode.BinNode f = myNodeTree4.new BinNode("F");
+        MyBinaryTreeStringNode.BinNode e = myNodeTree4.new BinNode("E");
+        MyBinaryTreeStringNode.BinNode d = myNodeTree4.new BinNode("D", null, f);
+        MyBinaryTreeStringNode.BinNode c = myNodeTree4.new BinNode("C", null, e);
+        MyBinaryTreeStringNode.BinNode b = myNodeTree4.new BinNode("B", d, null);
+        MyBinaryTreeStringNode.BinNode a = myNodeTree4.new BinNode("A", b, c);
         myNodeTree4.root = a;
+        myNodeTree4.testInitFromNode();
         myNodeTree4.drawTreeNode();
     }
 }
