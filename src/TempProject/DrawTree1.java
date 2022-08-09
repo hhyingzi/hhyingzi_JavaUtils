@@ -1,14 +1,12 @@
 package TempProject;
 
-import java.util.*;
-
 import javax.imageio.ImageIO;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.FileOutputStream;
 import java.io.IOException;
 
-public class Test {
+public class DrawTree1 {
     // 以下是常量
     private static final String PATH = "C:\\Users\\12921\\Downloads\\tree.png";
     // 画板长度
@@ -152,6 +150,7 @@ public class Test {
     }
 
     public DrawNode build(){
+        DrawNode m = new DrawNode(60);
         DrawNode e = new DrawNode(73);
         DrawNode h = new DrawNode(51);
         DrawNode i = new DrawNode(93);
@@ -162,7 +161,8 @@ public class Test {
         DrawNode c = new DrawNode(88,e,f);
         DrawNode g = new DrawNode(35,l,j);
         DrawNode d = new DrawNode(47,g,h);
-        DrawNode b = new DrawNode(58,d,null);
+//        DrawNode b = new DrawNode(58,d,null);
+        DrawNode b = new DrawNode(58,d,m);
         DrawNode a = new DrawNode(62,b,c);
         return a;
     }
@@ -173,7 +173,7 @@ public class Test {
     }
 
     public static void main(String[] args) throws IOException {
-        Test d = new Test();
+        DrawTree1 d = new DrawTree1();
         //先构建一颗二叉树
         DrawNode root = d.build();
         //调用入口方法画图

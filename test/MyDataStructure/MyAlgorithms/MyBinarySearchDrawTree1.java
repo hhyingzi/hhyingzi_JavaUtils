@@ -8,7 +8,7 @@ import static org.junit.jupiter.api.Assertions.*;
 /**
  * 二分查找测试
  */
-class MyBinarySearchTest extends MyBinarySearch {
+class MyBinarySearchDrawTree1 extends MyBinarySearch {
     //对不正确数据的反应
     @org.junit.jupiter.api.Test
     void testSearchFalse() {

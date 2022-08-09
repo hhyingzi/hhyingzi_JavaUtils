@@ -5,7 +5,7 @@ import java.util.Random;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-class TestSortInt extends MyBubbleSort {
+class DrawTree1SortInt extends MyBubbleSort {
     //对不正确数据的反应
     @org.junit.jupiter.api.Test
     void testSortFalse() {
