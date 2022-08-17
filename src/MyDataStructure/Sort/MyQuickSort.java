@@ -3,6 +3,7 @@ package MyDataStructure.Sort;
 import java.util.Random;
 import java.util.Scanner;
 
+
 /**
  * 快速排序
  * 选定一个值作为锚点，比采用双指针挖坑法，当锚点坑位在左侧时，右边寻找到小于锚点的数填入锚点，腾出右边坑位，再从左边找元素填入，依此类推整个数组

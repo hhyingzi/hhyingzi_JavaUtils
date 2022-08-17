@@ -28,17 +28,6 @@ public class MyBinaryTreeStringNode {
             this.rightChild = rightChild;
         }
     }
-    //手动创建节点
-    public void createNewNode(String data){
-        BinNode newNode = new BinNode();
-        newNode.data = data;
-    }
-    public void createNewNode(String data, BinNode leftChild, BinNode rightChild){
-        BinNode newNode = new BinNode();
-        newNode.data = data;
-        newNode.leftChild = leftChild;
-        newNode.rightChild = rightChild;
-    }
     public ArrayList<String> resultNodeArray = new ArrayList<String>();
 
     public void visit(BinNode node) {
@@ -380,7 +369,7 @@ public class MyBinaryTreeStringNode {
         }
     }
 
-    //根据节点做二叉树图，其中将 -99 替换为 空字符串
+    //根据节点做二叉树图，其中将 "null" 替换为 空字符串
     public void drawTreeNode() {
         calTreeDepth(root, 1);
         leverOrderDraw(this.root);  //用于绘图的层次遍历，将空节点记录为-99。

@@ -1,12 +1,7 @@
 /******************************************************************************
- *  Compilation:  javac UF.java
- *  Execution:    java UF < input.txt
- *  Dependencies: StdIn.java StdOut.java
  *  Data files:   https://algs4.cs.princeton.edu/15uf/tinyUF.txt
  *                https://algs4.cs.princeton.edu/15uf/mediumUF.txt
  *                https://algs4.cs.princeton.edu/15uf/largeUF.txt
- *
- *  Weighted quick-union by rank with path compression by halving.
  *
  *  % java UF < tinyUF.txt
  *  4 3
@@ -21,67 +16,67 @@
  *
  ******************************************************************************/
 
-package TempProject;
+package MyDataStructure.MyAlgorithms;
 
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.Scanner;
 
+/**
+ * 并查集Java实现，来源于 《算法第四版》。
+ * 功能：初始化一些顶点，并输入将两个顶点相连的边。将这些顶点组织成多个连通分量。
+ * this.count 获取连通分量的数量，find(int p) 查找顶点所在的连通分量的根，connected(int p, int q) 查看两个顶点是否相联通
+ */
 public class UF {
-    private int[] parent;  // parent[i] = parent of i
-    private byte[] rank;   // rank[i] = rank of subtree rooted at i (never more than 31)
-    private int count;     // number of components
+    private int[] parent;  // 连通后指向父节点，可沿着父节点一路找到连通分量的根
+    private int[] size;   // 每个连通分量所含节点（也可改为权重）
+    private int count;     // 连通分量的数量
 
+    //初始化n个节点 [0, n-1]，每个节点初始的的分量根节点parent是其自己。
     public UF(int n) {
-        if (n < 0) throw new IllegalArgumentException();
         count = n;
         parent = new int[n];
-        rank = new byte[n];
+        size = new int[n];
         for (int i = 0; i < n; i++) {
             parent[i] = i;
-            rank[i] = 0;
+            size[i] = 1;
         }
-    }
-
-    public int find(int p) {
-        validate(p);
-        while (p != parent[p]) {
-            parent[p] = parent[parent[p]];    // path compression by halving
-            p = parent[p];
-        }
-        return p;
     }
 
     public int count() {
         return count;
     }
 
-    @Deprecated
+    //给定一个节点，跟随其parent一路找到连通分量的根节点
+    public int find(int p) {
+        //如果p不是根，就一直往上走，顺便更新一次p的父节点
+        while (p != parent[p]) {
+            parent[p] = parent[parent[p]];  //p的父节点每次访问只提一层，如果经常访问p才会越来越接近分量根。
+            p = parent[p];
+        }
+        return p;
+    }
+
+    //检查节点 p 和 q 是否是连通的
     public boolean connected(int p, int q) {
         return find(p) == find(q);
     }
 
+    //连通p和q节点（将二者所在的分量，合并为一个分量）。
     public void union(int p, int q) {
         int rootP = find(p);
         int rootQ = find(q);
         if (rootP == rootQ) return;
-
-        // make root of smaller rank point to root of larger rank
-        if      (rank[rootP] < rank[rootQ]) parent[rootP] = rootQ;
-        else if (rank[rootP] > rank[rootQ]) parent[rootQ] = rootP;
-        else {
+        //将小树的根节点连接到大树的根节点
+        if(size[rootP] < size[rootQ]){
+            parent[rootP] = rootQ;
+            size[rootQ] += size[rootP];  //只需更新真正的根 rootQ 的 size 即可。
+        }
+        else{
             parent[rootQ] = rootP;
-            rank[rootP]++;
+            size[rootP] += size[rootQ];
         }
         count--;
-    }
-
-    // validate that p is a valid index
-    private void validate(int p) {
-        int n = parent.length;
-        if (p < 0 || p >= n) {
-            throw new IllegalArgumentException("index " + p + " is not between 0 and " + (n-1));
-        }
     }
 
     public static void main(String[] args) {

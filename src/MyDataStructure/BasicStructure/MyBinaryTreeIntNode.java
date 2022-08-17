@@ -2,6 +2,7 @@ package MyDataStructure.BasicStructure;
 
 import java.util.*;
 
+
 /**
  * 二叉树基本数据结构
  * 节点的数组表现形式为 arr[0, length-1]
@@ -27,17 +28,6 @@ public class MyBinaryTreeIntNode {
             this.leftChild = leftChild;
             this.rightChild = rightChild;
         }
-    }
-    //手动创建节点
-    public void createNewNode(int data){
-        BinNode newNode = new BinNode();
-        newNode.data = data;
-    }
-    public void createNewNode(int data, BinNode leftChild, BinNode rightChild){
-        BinNode newNode = new BinNode();
-        newNode.data = data;
-        newNode.leftChild = leftChild;
-        newNode.rightChild = rightChild;
     }
     public ArrayList<Integer> resultNodeArray = new ArrayList<>();
 
@@ -474,6 +464,7 @@ public class MyBinaryTreeIntNode {
         MyBinaryTreeIntNode.BinNode b = myNodeTree4.new BinNode(11, d, null);
         MyBinaryTreeIntNode.BinNode a = myNodeTree4.new BinNode(1, b, c);
         myNodeTree4.root = a;
+        System.out.println("=========="); myNodeTree4.printTravelResult();
         myNodeTree4.drawTreeNode();
     }
 }

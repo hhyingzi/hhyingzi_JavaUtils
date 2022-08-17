@@ -2,6 +2,7 @@ package MyDataStructure.Sort;
 
 import java.util.Scanner;
 
+
 /**
 * 冒泡排序
 * 从头开始，通过两两交换的方式把最大元素移动到末尾。

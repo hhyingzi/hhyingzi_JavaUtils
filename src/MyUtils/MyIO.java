@@ -1,11 +1,12 @@
 package MyUtils;
 
 import java.io.*;
+import java.util.Arrays;
 import java.util.Scanner;
 
 public class MyIO {
     /* 控制台按行读取，每行是一个 String，以空白行结束运行 */
-    public static void StdIOLinesExample(){
+    public void StdIOLinesExample(){
         Scanner sc = new Scanner(System.in);
         while(sc.hasNextLine()){
             String str = sc.nextLine();
@@ -13,19 +14,29 @@ public class MyIO {
             System.out.println(str);
         }
     }
-    /*
-    * 控制台输入 int 值，先输入要读取几个值，然后依次输入每个 int 值，读取完成后结束运行。
-    * 例如：以下示例输入5个数，分别是：0 1 2 3 4
-    * 5
-    * 0 1 2 3 4
-    */
-    public static void StdIOIntExample(){
+
+    /* 控制台输入许多数字，将这些数字自动存入数组。 */
+    public void StdInLineIntArray(){
         Scanner sc = new Scanner(System.in);
-        int times = sc.nextInt();  //首先输入一共要读取几次 int
-        for(int i=0; i<times; i++){
-            int a = sc.nextInt();
-            System.out.println(a);
+        String[] strs = sc.nextLine().split(" ");
+        int[] arr = new int[strs.length];
+        for(int i=0; i<strs.length; i++){
+            arr[i] = Integer.parseInt(strs[i]);
         }
+        System.out.println(Arrays.toString(arr));
+    }
+
+    /*
+    * 控制台输入 int 值，先输入要读取几个值，然后依次输入每个 int 值，存入数组 arr。
+    */
+    public void StdIOIntExample(){
+        Scanner sc = new Scanner(System.in);
+        int length = sc.nextInt();  //首先输入一共要读取几次 int
+        int[] arr = new int[length];
+        for(int i=0; i<length; i++){
+            arr[i] = sc.nextInt();
+        }
+        System.out.println(Arrays.toString(arr));
     }
 
     /*
@@ -33,7 +44,7 @@ public class MyIO {
     * Datas/temp.txt:
     * 1 2 3 4 5
     * */
-    public static void MyFileInputIntExample(){
+    public void MyFileInputIntExample(){
         String filePath = "D:\\code\\java\\hhyingzi_JavaUtils\\src\\Datas\\temp.txt";
         try{
             File dataFile = new File(filePath);  //数据文件 dataFile
@@ -45,5 +56,10 @@ public class MyIO {
         }catch (FileNotFoundException e){
             System.out.println("HH捕获异常，找不到文件："+filePath);
         }
+    }
+
+    public static void main(String[] args){
+        MyIO myIO = new MyIO();
+        myIO.StdIOIntExample();
     }
 }

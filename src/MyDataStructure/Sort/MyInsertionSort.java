@@ -2,6 +2,7 @@ package MyDataStructure.Sort;
 
 import java.util.Scanner;
 
+
 /**
  * 插入排序
  * 索引从左往右依次执行大循环，索引左边都是有序的，把索引所在的元素插入到左边有序序列中的合适位置。
