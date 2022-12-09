@@ -23,19 +23,19 @@ class Vertex{
 }
 
 class Edge{
-    int v1, v2;  //
+    int key1, key2;  //
     int data;  //边含有的数据
     int weight;  //边的权重
     public Edge(){}
-    public Edge(int v1, int v2){ this.v1 = v1; this.v2 = v2; }
+    public Edge(int key1, int key2){ this.key1 = key1; this.key2 = key2; }
 }
 
 public class MyGraphAdjTable {
     public int VNum;  //顶点数目
     public int ENum;  //边的数目
-    public HashMap<Integer, Vertex> vertices = new HashMap<>();  //顶点集
+    public HashMap<Integer, Vertex> vertices = new HashMap<>();  //顶点集<key, Vertex>
 
-    public LinkedList<Vertex> resultVertexList = new LinkedList<Vertex>();
+    public LinkedList<Vertex> resultVertexList = new LinkedList<>();
 
     //增删顶点
     public void addVertex(int key){ if(!vertices.containsKey(key)){ VNum++; } vertices.put(key, new Vertex(key)); } //添加不携带数据value的顶点
@@ -49,12 +49,12 @@ public class MyGraphAdjTable {
 
         //遍历 vertices 的邻接表，找到每个相连的 v2 顶点
         for (Edge tempEdge : vertex.adj) {
-            if (tempEdge.v2 != key) {
+            if (tempEdge.key2 != key) {
                 //从顶点v2的邻接表中删除边 Edge(v2, v1)
-                LinkedList<Edge> edgeList = vertices.get(tempEdge.v2).adj;
+                LinkedList<Edge> edgeList = vertices.get(tempEdge.key2).adj;
                 Iterator<Edge> edgeIter = edgeList.iterator();
                 while(edgeIter.hasNext()){
-                    if (edgeIter.next().v2 == key) edgeIter.remove();
+                    if (edgeIter.next().key2 == key) edgeIter.remove();
                 }
             }
         }
@@ -73,35 +73,79 @@ public class MyGraphAdjTable {
     /********** 算法部分 **********/
     public void visit(Vertex vertex){ resultVertexList.add(vertex); }
 
-    private HashSet<Vertex> visitedKey = new HashSet<>();
+    private HashSet<Vertex> visitedVertex = new HashSet<>();
     //深度优先搜索（递归版）
     public void DFSRecur(Vertex root){
         //检查是否访问过
-        if(root == null || visitedKey.contains(root)) return;  //访问过
-        else visitedKey.add(root);  //未访问过，则加入set
+        if(root == null || visitedVertex.contains(root)) return;  //访问过
+        visitedVertex.add(root);  //未访问过，则加入set
         visit(root);  //访问顶点
         //根据邻接表，递归访问 v2 顶点
         for(Edge edge: root.adj){
-            DFSRecur(vertices.get(edge.v2));
+            Vertex v2 = vertices.get(edge.key2);
+            DFSRecur(v2);
         }
     }
-    //广度优先搜索
-    public void BFS(){}
-    //寻找和顶点 key 连通的所有顶点，结果存入 resultVertexList。思路：建立顶点 key 所在的极大连通子图（通过并查集或BFS或DFS搜索）。
-    public void otherVerticesConnected(int key){ }
+    //深度优先搜索（迭代版）
+    public void DFSIter(Vertex root){
+        if(root == null) return;
+        LinkedList<Vertex> stack = new LinkedList<>();
+        LinkedList<Vertex> assistStack = new LinkedList<>();
+        stack.push(root);
+        while(!stack.isEmpty()){
+            Vertex vertex = stack.pop();
+            visit(vertex);
+            visitedVertex.add(vertex);
+            //将顶点 vertex 的邻接表adj中的顶点按顺序入栈 assistStack
+            for(Edge edge: vertex.adj){
+                Vertex v2 = vertices.get(edge.key2);
+                if(visitedVertex.contains(v2)) continue;
+                else assistStack.push(v2);
+            }
+            //将 assistStack 中的顶点逆序出栈，再入栈到 stack 中（这样 pop() 时会顺序出栈）
+            while(!assistStack.isEmpty()){
+                stack.push(assistStack.pop());
+            }
+        }
+    }
+    //广度优先搜索（迭代版）
+    public void BFSIter(Vertex root){
+        if(root == null) return;
+        LinkedList<Vertex> queue = new LinkedList<>();
+        queue.addLast(root);
+        while(!queue.isEmpty()){
+            Vertex vertex = queue.removeFirst();
+            visit(vertex);
+            visitedVertex.add(vertex);  //加入已访问顶点集
+            for(Edge edge: vertex.adj){
+                Vertex v2 = vertices.get(edge.key2);
+                if(visitedVertex.contains(v2)) continue;
+                else queue.addLast(v2);
+            }
+        }
+    }
+
+    //寻找和顶点 vertex 连通的所有顶点，结果存入 resultVertexList。思路：建立顶点 key 所在的极大连通子图（通过并查集或BFS或DFS搜索）。
+    public void otherVerticesConnected(Vertex root){
+        resultVertexList.clear();
+        DFSRecur(root);
+    }
 
     public static void main(String[] args){
         /**
-         * 0 - 1 - 3 - 4
-         *   - 2
+         *              0
+         *       1      |       2
+         *       3      |       5
+         *       4
          */
         MyGraphAdjTable graph1 = new MyGraphAdjTable();
-        for(int i=0; i<5; i++){  //录入顶点 0 1 2 3
+        for(int i=0; i<6; i++){  //录入顶点
             graph1.addVertex(i);
         }
         graph1.addEdge(0, 1); graph1.addEdge(0, 2); graph1.addEdge(1, 3); graph1.addEdge(3, 4);
+        graph1.addEdge(2, 5);
         graph1.resultVertexList.clear();
-        graph1.DFSRecur(graph1.vertices.get(0));
+        graph1.DFSIter(graph1.vertices.get(0));
         for(Vertex vertex: graph1.resultVertexList)
             System.out.println(vertex.key + " ");
     }
