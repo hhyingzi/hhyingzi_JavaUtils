@@ -1,6 +1,6 @@
 package MyDataStructure.BasicStructure;
 
-import sun.awt.image.ImageWatched;
+//import sun.awt.image.ImageWatched;
 
 import java.util.HashMap;
 import java.util.HashSet;
@@ -14,28 +14,29 @@ import java.util.LinkedList;
  * 边集是以顶点的 key 作为 key 的 HashMap ，对应的值是一个 Linkedlist<Edge> 邻接表，存储了该顶点作为出度的所有边，
  */
 
-class Vertex{
-    int key;  //顶点 key
-    int value;  //顶点存储的数据
-    LinkedList<Edge> adj = new LinkedList<>();  //边集（邻接表）
-    public Vertex(){}
-    public Vertex(int key){ this.key = key; }
-}
 
-class Edge{
-    int key1, key2;  //
-    int data;  //边含有的数据
-    int weight;  //边的权重
-    public Edge(){}
-    public Edge(int key1, int key2){ this.key1 = key1; this.key2 = key2; }
-}
 
 public class MyGraphAdjTable {
     public int VNum;  //顶点数目
     public int ENum;  //边的数目
     public HashMap<Integer, Vertex> vertices = new HashMap<>();  //顶点集<key, Vertex>
-
     public LinkedList<Vertex> resultVertexList = new LinkedList<>();
+
+    class Vertex{
+        int key;  //顶点 key
+        int value;  //顶点存储的数据
+        LinkedList<Edge> adj = new LinkedList<>();  //边集（邻接表）
+        public Vertex(){}
+        public Vertex(int key){ this.key = key; }
+    }
+
+    class Edge{
+        int key1, key2;  //
+        int data;  //边含有的数据
+        int weight;  //边的权重
+        public Edge(){}
+        public Edge(int key1, int key2){ this.key1 = key1; this.key2 = key2; }
+    }
 
     //增删顶点
     public void addVertex(int key){ if(!vertices.containsKey(key)){ VNum++; } vertices.put(key, new Vertex(key)); } //添加不携带数据value的顶点

@@ -1,18 +1,15 @@
 package MySolutions.TextAndString;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.io.Reader;
+import java.io.*;
 import java.nio.charset.Charset;
 import java.util.ArrayList;
+import java.util.List;
 
 public class TextModify {
-    public static final String filePath = "Datas/temp.txt";
+    public static final String filePath = "D:\\code\\java\\hhyingzi_JavaUtils\\src\\Datas\\temp.txt";
 
-    /* 读取文件中的文本 */
+    /* 读取方法1 FileInputStream：读取文件中的所有文本，放进一个字符串中 */
     public String getFileAllText(){
-        String filePath = "D:\\code\\java\\hhyingzi_JavaUtils\\src\\Datas\\temp.txt";
         try{
             //方法一： FileInputStream 将每个字节存储进字节数组，限制2GB且根据内存实际情况小于该值。
             FileInputStream fileInputStream = new FileInputStream(filePath);  //FileInputStream 输入流
@@ -29,7 +26,32 @@ public class TextModify {
         }
     }
 
-    /* 将文本分隔为字符串数组，并重新组织分隔符 */
+    /* 读取方法2 BufferedReader：按行读取，每行作为一个字符串，全部放进 String[] 中 */
+    public List<String> getFileWithLine(){
+        File file = new File(filePath);
+        List<String> lineList = new ArrayList<>();
+        try{
+            BufferedReader bufferedReader = new BufferedReader(new FileReader(file));
+            //lineList = bufferedReader.lines().collect(Collectors.toList());  //与下面等价，java8新特性
+            String line = null;
+            while((line = bufferedReader.readLine()) != null){
+                lineList.add(line);
+            }
+
+            //重新处理每一行，去掉首位空白，删除空白行
+            String temp;
+            for(int i=lineList.size()-1; i>=0; i--){
+                temp = lineList.get(i).trim();  //去除首尾空白
+                if(temp.isEmpty()) lineList.remove(i);  //删除空白行
+                else lineList.set(i, temp);
+            }
+        }catch (IOException e){
+            e.printStackTrace();
+        }
+        return lineList;
+    }
+
+    /* 将 String 根据空白符，分割为字符串数组，并用自定义的分隔符重新组合 */
     public static void refactorString(String string){
         String[] resultArr = string.split("\\s");
         for(String item: resultArr){
@@ -38,14 +60,29 @@ public class TextModify {
             }
             System.out.println(item);
         }
-        String newResultArr = String.join("|", resultArr);
-//        System.out.println(newResultArr);
+        String newResultArr = String.join("|", resultArr);  //用新的分隔符
     }
 
     public static void main(String[] args){
         TextModify solution = new TextModify();
-        String result = solution.getFileAllText();
-        System.out.println(result + "\n=================");
-        solution.refactorString(result);
+        /** 读取方法1 FileInputStream：读取文件中的所有文本，放进一个字符串中 */
+//        String result = solution.getFileAllText();
+//        System.out.println(result + "\n=================");
+//        solution.refactorString(result);
+
+        /** 读取方法2 BufferedReader：按行读取，每行作为一个字符串，全部放进 String[] 中 */
+        List<String> result = solution.getFileWithLine();
+        List<String> newResult = new ArrayList<>();
+        String temp =  null;
+        for(int i=0; i<result.size(); i++){
+            if(i%2 == 0){
+                temp = result.get(i);
+            }
+            else{
+                newResult.add(temp + "\t" + result.get(i));
+                temp = null;
+            }
+        }
+        newResult.forEach(item -> System.out.println(item));
     }
 }

@@ -1,8 +1,20 @@
-2500 1250
-1500 400
-1250 250
-250 100
- 250 250
- 750 250
-50000
-200 200
+Object blockingLock()
+          获取其 configureBlocking 和 register 方法实现同步的对象。
+ SelectableChannel configureBlocking(boolean block)
+          调整此通道的阻塞模式。
+protected  void implCloseChannel()
+          关闭此通道。
+protected abstract  void implCloseSelectableChannel()
+          关闭此可选择通道。
+protected abstract  void implConfigureBlocking(boolean block)
+          调整此通道的阻塞模式。
+ boolean isBlocking()
+          判断此通道上的每个 I/O 操作在完成前是否被阻塞。
+ boolean isRegistered()
+          判断此通道当前是否已向任何选择器注册。
+ SelectionKey keyFor(Selector sel)
+          获取表示通道向给定选择器注册的键。
+ SelectorProvider provider()
+          返回创建此通道的提供者。
+ SelectionKey register(Selector sel, int ops, Object att)
+          向给定的选择器注册此通道，返回一个选择键。
