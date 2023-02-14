@@ -164,13 +164,16 @@ public class MyIO {
 
     /**********************实用功能*************************/
     //将 API 中复制的不带返回值函数（构造函数），转化为有道云表格
+    //Pattern.compile("([\\w<>]+.*)");  第一版
+    // Pattern.compile("([\\w<>]+.*)");  第二版，增加对泛型<E>识别
+    // Pattern.compile("([\\w<>\\.]+.*)") 第三版，增加对内部类 Class.InnerClass 的点号识别
     public void myStringConvertYoudaoTable1(){
         String filePath = "D:\\code\\java\\hhyingzi_JavaUtils\\src\\Datas\\temp.txt";
         try{
             BufferedReader in = new BufferedReader(new FileReader(filePath));
             String temp;
             StringBuilder sb = new StringBuilder();
-            Pattern pattern = Pattern.compile("(\\w+.*)");  //构造函数，无返回值
+            Pattern pattern = Pattern.compile("([\\w<>\\.\\[\\]]+.*)");  //构造函数，无返回值
             while((temp=in.readLine()) !=  null){
                 temp = temp.trim();
                 Matcher matcher = pattern.matcher(temp);
@@ -187,18 +190,20 @@ public class MyIO {
         }
     }
     //将 API 中复制的带返回值函数，转化为有道云表格
+    //Pattern.compile("(([\\w]+\\s+)+)(.*)");  第一版，思路是将方法说明行以空格分割，前面的内容组合起来，都是返回值，最后一部分是函数本体。
+    //Pattern.compile("(([\\w<,>\\.\?\&\\[\\]]+\\s+)+)(.*)"); 第二版，增加对泛型<E>符号，泛型多参数之间的逗号，泛型中的?号，泛型中的 & 号，内部类 Class.InnerClass的点号，数组[]符号的识别
     public void myStringConvertYoudaoTable2(){
         String filePath = "D:\\code\\java\\hhyingzi_JavaUtils\\src\\Datas\\temp.txt";
         try{
             BufferedReader in = new BufferedReader(new FileReader(filePath));
             String temp;
             StringBuilder sb = new StringBuilder();
-            Pattern pattern = Pattern.compile("((\\w+\\s+)+)(.*)");  //有返回值的普通方法。返回值：((\w+\s+)+) ，函数：(.*)
+            Pattern pattern = Pattern.compile("(([\\w<>,\\.\\?\\&\\[\\]]+\\s+)+)(.*)");  //有返回值的普通方法。返回值：((\w+\s+)+) ，函数：(.*)
             while((temp=in.readLine()) !=  null){
                 temp = temp.trim();
                 Matcher matcher = pattern.matcher(temp);
                 if(matcher.matches()){
-                    sb.append(matcher.group(1) + "| " + matcher.group(3) + " | ");  //第一行，带返回值的方法。其中group(2)是大括号里的小括号，忽略这个分组
+                    sb.append(matcher.group(1).trim() + " | " + matcher.group(3).trim() + " | ");  //第一行，带返回值的方法。其中group(2)是大括号里的小括号，忽略这个分组
                 }
                 if((temp=in.readLine()) != null){
                     sb.append(temp.trim() + "\n");  //第二行，说明行
@@ -232,10 +237,10 @@ public class MyIO {
             System.out.println("目录最新日期：" + lastModifiedString);
         }
     }
-
+    //修改有道云 markdown 表格乱码
     public void myYoudaoMarkdownRepair(){
-        final String out_file = "D:\\code\\java\\hhyingzi_JavaUtils\\src\\Datas\\temp.txt";
-        final String data_file = "D:\\code\\java\\hhyingzi_JavaUtils\\src\\Datas\\temp2.txt";
+        final String data_file = "D:\\code\\java\\hhyingzi_JavaUtils\\src\\Datas\\temp.txt";
+        final String out_file = "D:\\code\\java\\hhyingzi_JavaUtils\\src\\Datas\\temp2.txt";
         try(
                 FileChannel fisChannel = new FileInputStream(data_file).getChannel();
                 BufferedReader bufferedReader = new BufferedReader(Channels.newReader(fisChannel, "UTF-8"));
@@ -267,8 +272,10 @@ public class MyIO {
 
         /* 将 API 转化为有道云表格 */
         //构造函数
-//        myIO.myStringConvertYoudaoTable1();
-        //普通函数（带返回值）
+        myIO.myStringConvertYoudaoTable1();
+
+        System.out.println("===========================================");
+        //普通函数或字段（带返回值）
         myIO.myStringConvertYoudaoTable2();
 
         //修改文件最新修改日期

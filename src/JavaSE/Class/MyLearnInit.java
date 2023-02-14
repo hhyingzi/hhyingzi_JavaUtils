@@ -8,7 +8,7 @@ package JavaSE.Class;
  * 子类普通成员
  * 子类
  * */
-public class ParentChildLearnInit {
+public class MyLearnInit {
     public static void main(String[] args){
         ConstructChild child1 = new ConstructChild();
         System.out.println("=====子类构造函数前调用 super()=====");

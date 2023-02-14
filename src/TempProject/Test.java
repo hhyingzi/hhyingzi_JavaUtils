@@ -1,25 +1,25 @@
 package TempProject;
 
-import java.net.ConnectException;
-import java.net.DatagramSocket;
-import java.net.InetSocketAddress;
-import java.nio.channels.DatagramChannel;
-import java.nio.channels.SocketChannel;
+import javax.swing.*;
+import java.awt.*;
 
 public class Test {
-    static final String data_file = "D:\\code\\java\\hhyingzi_JavaUtils\\src\\Datas\\temp.txt";
-    static final String data_file_out = "D:\\code\\java\\hhyingzi_JavaUtils\\src\\Datas\\temp2.txt";
-
+    private Frame f = new Frame("测试");
+    // 定义水平摆放组件的Box对象
+    private Box horizontal = Box.createHorizontalBox();
+    // 定义垂直摆放组件的Box对象
+    private Box vertical = Box.createVerticalBox();
+    public void init() {
+        horizontal.add(new Button("水平按钮一"));
+        horizontal.add(new Button("水平按钮二"));
+        vertical.add(new Button("垂直按钮一"));
+        vertical.add(new Button("垂直按钮二"));
+        f.add(horizontal , BorderLayout.NORTH);
+        f.add(vertical);
+        f.pack();
+        f.setVisible(true);
+    }
     public static void main(String[] args) {
-        try(
-                DatagramChannel datagramChannel = DatagramChannel.open() //自身随机分配了一个接收端口
-        ){
-            DatagramSocket datagramSocket = datagramChannel.socket();
-            datagramSocket.bind(new InetSocketAddress("127.0.0.1", 9999));  //向该地址和端口发送数据
-        }catch (ConnectException connectException){
-            System.out.println("Connect fail!");
-            connectException.printStackTrace();
-        }
-        catch(Exception e){e.printStackTrace();}
+        new Test().init();
     }
 }

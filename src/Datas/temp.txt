@@ -1,20 +1,22 @@
-Object blockingLock()
-          获取其 configureBlocking 和 register 方法实现同步的对象。
- SelectableChannel configureBlocking(boolean block)
-          调整此通道的阻塞模式。
-protected  void implCloseChannel()
-          关闭此通道。
-protected abstract  void implCloseSelectableChannel()
-          关闭此可选择通道。
-protected abstract  void implConfigureBlocking(boolean block)
-          调整此通道的阻塞模式。
- boolean isBlocking()
-          判断此通道上的每个 I/O 操作在完成前是否被阻塞。
- boolean isRegistered()
-          判断此通道当前是否已向任何选择器注册。
- SelectionKey keyFor(Selector sel)
-          获取表示通道向给定选择器注册的键。
- SelectorProvider provider()
-          返回创建此通道的提供者。
- SelectionKey register(Selector sel, int ops, Object att)
-          向给定的选择器注册此通道，返回一个选择键。
+static Component createGlue()
+          创建一个不可见的 "glue" 组件，其可见组件有一个最大宽度（对于横向 box）或高度（对于纵向 box）的 Box，该组件可能很有用。
+static Box createHorizontalBox()
+          创建一个从左到右显示其组件的 Box。
+static Component createHorizontalGlue()
+          创建一个横向 glue 组件。
+static Component createHorizontalStrut(int width)
+          创建一个不可见的、固定宽度的组件。
+static Component createRigidArea(Dimension d)
+          创建一个总是具有指定大小的不可见组件。
+static Box createVerticalBox()
+          创建一个从上到下显示其组件的 Box。
+static Component createVerticalGlue()
+          创建一个纵向 glue 组件。
+static Component createVerticalStrut(int height)
+          创建一个不可见的、固定高度的组件。
+ AccessibleContext getAccessibleContext()
+          获取与此 Box 相关联的 AccessibleContext。
+protected  void paintComponent(Graphics g)
+          绘制此 Box。
+ void setLayout(LayoutManager l)
+          抛出一个 AWTError，因为 Box 只能使用 BoxLayout。

@@ -41,7 +41,7 @@ public class MyArrayInt {
         return result;
     }
 
-    public int search(int index){
+    public int get(int index){
         return data[index];
     }
 
