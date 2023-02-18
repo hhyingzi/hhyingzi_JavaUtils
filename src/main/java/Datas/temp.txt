@@ -1,22 +1,47 @@
-static Component createGlue()
-          创建一个不可见的 "glue" 组件，其可见组件有一个最大宽度（对于横向 box）或高度（对于纵向 box）的 Box，该组件可能很有用。
-static Box createHorizontalBox()
-          创建一个从左到右显示其组件的 Box。
-static Component createHorizontalGlue()
-          创建一个横向 glue 组件。
-static Component createHorizontalStrut(int width)
-          创建一个不可见的、固定宽度的组件。
-static Component createRigidArea(Dimension d)
-          创建一个总是具有指定大小的不可见组件。
-static Box createVerticalBox()
-          创建一个从上到下显示其组件的 Box。
-static Component createVerticalGlue()
-          创建一个纵向 glue 组件。
-static Component createVerticalStrut(int height)
-          创建一个不可见的、固定高度的组件。
- AccessibleContext getAccessibleContext()
-          获取与此 Box 相关联的 AccessibleContext。
-protected  void paintComponent(Graphics g)
-          绘制此 Box。
- void setLayout(LayoutManager l)
-          抛出一个 AWTError，因为 Box 只能使用 BoxLayout。
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE log SYSTEM "logger.dtd">
+<log>
+</log>
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE log SYSTEM "logger.dtd">
+<log>
+<record>
+  <date>2023-02-18T05:23:37.494488100Z</date>
+  <millis>1676697817494</millis>
+  <nanos>488100</nanos>
+  <sequence>0</sequence>
+  <logger>MyUtils.MyOss</logger>
+  <level>INFO</level>
+  <class>MyUtils.MyOss</class>
+  <method>ossUploadAFile</method>
+  <thread>1</thread>
+  <message>2023/02/18 13:23:37上传成功：OSS_20230218_132337_219_85972783F556E1633767333873693E47.png
+https://hhyingzi-youdao.oss-cn-hangzhou.aliyuncs.com/OSS_20230218_132337_219_85972783F556E1633767333873693E47.png</message>
+</record>
+<record>
+  <date>2023-02-18T05:23:37.590488100Z</date>
+  <millis>1676697817590</millis>
+  <nanos>488100</nanos>
+  <sequence>1</sequence>
+  <logger>MyUtils.MyOss</logger>
+  <level>INFO</level>
+  <class>MyUtils.MyOss</class>
+  <method>ossUploadAFile</method>
+  <thread>1</thread>
+  <message>2023/02/18 13:23:37上传成功：OSS_20230218_132337_509_3933B5053F57F582591C9CE547FC9FDA.png
+https://hhyingzi-youdao.oss-cn-hangzhou.aliyuncs.com/OSS_20230218_132337_509_3933B5053F57F582591C9CE547FC9FDA.png</message>
+</record>
+<record>
+  <date>2023-02-18T05:23:37.654493200Z</date>
+  <millis>1676697817654</millis>
+  <nanos>493200</nanos>
+  <sequence>2</sequence>
+  <logger>MyUtils.MyOss</logger>
+  <level>INFO</level>
+  <class>MyUtils.MyOss</class>
+  <method>ossUploadAFile</method>
+  <thread>1</thread>
+  <message>2023/02/18 13:23:37上传成功：OSS_20230218_132337_591_B055CC4AEE6A1D4264EFE24E4667934E.png
+https://hhyingzi-youdao.oss-cn-hangzhou.aliyuncs.com/OSS_20230218_132337_591_B055CC4AEE6A1D4264EFE24E4667934E.png</message>
+</record>
+</log>

@@ -12,6 +12,9 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class MyIO {
+    private String dataFile = "D:\\code\\java\\hhyingzi_JavaUtils\\src\\main\\java\\Datas\\temp.txt";
+    private String outFile = "D:\\code\\java\\hhyingzi_JavaUtils\\src\\main\\java\\Datas\\temp2.txt";
+
     /*********** 控制台读取 ***********/
     /* 控制台按行读取方法1：Scanner。每行是一个 String，以空白行结束运行 */
     public void myStdInWithLines1(){
@@ -66,7 +69,7 @@ public class MyIO {
     /*********** 文件写入 ***********/
     //按字符文件写入
     public void writeFileWithString(){
-        String filePath = "D:\\code\\java\\hhyingzi_JavaUtils\\src\\Datas\\temp.txt";
+        String filePath = dataFile;
         PrintWriter out = null;
         String text = "Hello!你好！";
         try{
@@ -84,7 +87,7 @@ public class MyIO {
      * */
     //方法一：按字节读取, FileInputStream
     public void readFileWithBytes(){
-        String filePath = "D:\\code\\java\\hhyingzi_JavaUtils\\src\\Datas\\temp.txt";
+        String filePath = dataFile;
         try{
             //FileInputStream 将每个字节存储进字节数组，限制2GB且根据内存实际情况小于该值。
             FileInputStream fileInputStream = new FileInputStream(filePath);  //FileInputStream 输入流
@@ -101,7 +104,7 @@ public class MyIO {
     }
     //方法二：按行读取, InputStreamReader -> BufferedReader
     public void readFileWithLine(){
-        final String file_path = "D:\\code\\java\\hhyingzi_JavaUtils\\src\\Datas\\temp.txt";
+        final String file_path = dataFile;
         try{
             //当字符输入流，编码默认为 utf-8 时可直接用 FileReader 构建 BufferedReader
             BufferedReader in = new BufferedReader(new FileReader(file_path));
@@ -123,7 +126,7 @@ public class MyIO {
     }
     //一个字符一个字符从文件中读取（结果完全与源文件相同，换行符也会正常读取）
     public String readFileWithChar(){
-        final String file_path = "D:\\code\\java\\hhyingzi_JavaUtils\\src\\Datas\\temp.txt";
+        final String file_path = dataFile;
         try{
             BufferedReader in = new BufferedReader(new FileReader(file_path));
             StringBuilder sb = new StringBuilder();
@@ -149,7 +152,7 @@ public class MyIO {
     * 1 2 3 4 5
     * */
     public void readFileWithInt(){
-        String filePath = "D:\\code\\java\\hhyingzi_JavaUtils\\src\\Datas\\temp.txt";
+        String filePath = dataFile;
         try{
             File dataFile = new File(filePath);  //数据文件 dataFile
             Scanner sc = new Scanner(dataFile);
@@ -168,7 +171,7 @@ public class MyIO {
     // Pattern.compile("([\\w<>]+.*)");  第二版，增加对泛型<E>识别
     // Pattern.compile("([\\w<>\\.]+.*)") 第三版，增加对内部类 Class.InnerClass 的点号识别
     public void myStringConvertYoudaoTable1(){
-        String filePath = "D:\\code\\java\\hhyingzi_JavaUtils\\src\\Datas\\temp.txt";
+        String filePath = dataFile;
         try{
             BufferedReader in = new BufferedReader(new FileReader(filePath));
             String temp;
@@ -193,7 +196,7 @@ public class MyIO {
     //Pattern.compile("(([\\w]+\\s+)+)(.*)");  第一版，思路是将方法说明行以空格分割，前面的内容组合起来，都是返回值，最后一部分是函数本体。
     //Pattern.compile("(([\\w<,>\\.\?\&\\[\\]]+\\s+)+)(.*)"); 第二版，增加对泛型<E>符号，泛型多参数之间的逗号，泛型中的?号，泛型中的 & 号，内部类 Class.InnerClass的点号，数组[]符号的识别
     public void myStringConvertYoudaoTable2(){
-        String filePath = "D:\\code\\java\\hhyingzi_JavaUtils\\src\\Datas\\temp.txt";
+        String filePath = dataFile;
         try{
             BufferedReader in = new BufferedReader(new FileReader(filePath));
             String temp;
@@ -216,7 +219,7 @@ public class MyIO {
     }
     //一键更新文件/文件夹最新修改时间
     public void myFileOrDirModifyTimes(){
-        final String DEFAULT_PATH = "D:\\code\\java\\hhyingzi_JavaUtils\\src\\Datas\\temp.txt";
+        final String DEFAULT_PATH = dataFile;
 
         String path = DEFAULT_PATH;  //真正的文件目录，用之前要修改路径名，用完要恢复到 DEFAULT_PATH
         File file = new File(path);
@@ -239,8 +242,8 @@ public class MyIO {
     }
     //修改有道云 markdown 表格乱码
     public void myYoudaoMarkdownRepair(){
-        final String data_file = "D:\\code\\java\\hhyingzi_JavaUtils\\src\\Datas\\temp.txt";
-        final String out_file = "D:\\code\\java\\hhyingzi_JavaUtils\\src\\Datas\\temp2.txt";
+        final String data_file = dataFile;
+        final String out_file = outFile;
         try(
                 FileChannel fisChannel = new FileInputStream(data_file).getChannel();
                 BufferedReader bufferedReader = new BufferedReader(Channels.newReader(fisChannel, "UTF-8"));
