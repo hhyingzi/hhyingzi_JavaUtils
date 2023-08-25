@@ -7,6 +7,7 @@ import com.aliyun.oss.model.*;
 import org.apache.commons.codec.binary.Hex;
 
 import java.io.File;
+import java.lang.reflect.Array;
 import java.net.URLDecoder;
 import java.net.URLEncoder;
 import java.nio.file.Files;
@@ -62,7 +63,8 @@ public class MyOss {
     // ![123](https://hhyingzi-youdao.oss-cn-hangzhou.aliyuncs.com/git%E5%8E%9F%E7%90%86.png)
     //                hhyingzi-youdao.oss-cn-hangzhou.aliyuncs.com/(.+)[)\s]
     //                                                           group(1)
-    public static String patternStringLog = "hhyingzi-youdao\\.oss-cn-hangzhou\\.aliyuncs\\.com\\/(.+?)[\\s<]";
+//    public static String patternStringLog = "hhyingzi-youdao\\.oss-cn-hangzhou\\.aliyuncs\\.com\\/(.+?)[\\s<)]";
+    public static String patternStringLog = "https://(hhyingzi-youdao\\.oss-cn-hangzhou\\.aliyuncs\\.com\\/.*\\.(png))";
 
     private static String data_file = "D:\\code\\java\\hhyingzi_JavaUtils\\src\\main\\java\\Datas\\temp.txt"; //临时文件，草稿
 
@@ -111,6 +113,31 @@ public class MyOss {
             System.out.println("\t[" + (i+1) + "]: " + ossObjectSummaryList.get(i).getKey());  //打印文件名
         }
     }
+    //根据文件名或 URL，下载一个文件
+    public static void ossDownloadFile(String file_url){
+        Pattern pattern = Pattern.compile(patternStringLog);  //识别 URL，提取文件名为 group(1)
+        Matcher matcher = pattern.matcher(file_url);
+
+        String pureFileName;  //OSS中对应的纯文件名
+        //不是URL，则字符串本身就是纯文件名，是URL，则提取其中的文件名。
+        if(!matcher.matches()) pureFileName = file_url;
+        else pureFileName = matcher.group(1);
+
+        //检测OSS是否存在此文件
+        boolean isExist = ossClient.doesObjectExist(bucketYoudao, pureFileName);
+        if(isExist){
+            try{
+                File downloadFile = new File(file_download_dir + File.separator + "手动下载:" + pureFileName);
+                ossClient.getObject(new GetObjectRequest(bucketYoudao, pureFileName), downloadFile);
+            }catch (Exception e){
+                e.printStackTrace();
+                System.out.println("OSS含有此文件，但下载失败：【" + pureFileName + "】， Of URL: " + file_url);
+            }
+        }
+        else{
+            System.out.println("OSS不含此文件：【" + pureFileName + "】， Of URL: " + file_url);
+        }
+    }
     //上传一个文件，并返回 URL
     public static boolean ossUploadAFile(File file) throws Exception{
         //失败重传3次
@@ -132,6 +159,9 @@ public class MyOss {
 //                System.out.println(logSuccessStr);
                 logger.log(System.Logger.Level.INFO, logSuccessStr);
                 return true;
+            }
+            else{
+                logger.log(System.Logger.Level.ERROR, "上传失败" + file.getName());
             }
         }
         return false;
@@ -239,8 +269,10 @@ public class MyOss {
             File[] fileList= dir.listFiles();
             int upLoadCount = 0;
             for(File file: fileList){
+                String oldName = file.getName();
                 if(file.isFile()){
                     file = myRenameFile(file);
+                    logger.log(System.Logger.Level.INFO, "即将上传文件： 【" + oldName + "】");
                     //上传该文件
                     boolean isSuccess = ossUploadAFile(file);
                     if(isSuccess) upLoadCount++;
@@ -259,7 +291,7 @@ public class MyOss {
         while(matcher.find()){
             String temp = matcher.group(1);
             String fileName = URLDecoder.decode(temp, "utf-8");
-            boolean isdel = ossDelAFile(new File(fileName));
+            boolean isdel = ossDelAFile(new File(fileName));  //调用 删除方法
             if(isdel) delCount++;
         }
         System.out.println("共删除 " + delCount + "个文件。");
@@ -274,8 +306,13 @@ public class MyOss {
             //检测上传文件夹，上传所有文件，记录上传日志，移动至下载文件夹，
             myUploadFiles();
 
-            //从 markdown 中检测需要删除的文件，移动至下载文件夹，删除所有文件，
+            //从 markdown 中检测需要删除的文件，移动至下载文件夹，删除所有文件
 //            myDelete(patternStringLog);
+
+            //针对文件的删除
+//            ArrayList<String> delList = new ArrayList<>();
+//            delList.add();
+//            for(String item: delList) ossDelAFile(new File(item));
 
         }catch (Exception e){e.printStackTrace(); }
         finally { if(ossClient != null) ossClient.shutdown(); }

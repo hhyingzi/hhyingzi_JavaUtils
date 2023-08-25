@@ -12,10 +12,7 @@ public class StartProject {
 		StartProject startProject = new StartProject();
 		watch.start();
 		/* 以下放入程序 */
-		ArrayList<Object> arrayList = new ArrayList<>();
-		arrayList.add(123);
-		arrayList.add("Hello");
-		arrayList.forEach((item) -> System.out.println(item));
+		System.out.println(Math.abs(-1));
 		/* 以上放入程序 */
 		watch.end();
 	}

@@ -1,23 +1,31 @@
 package MyUtils;
 
 import javax.crypto.*;
+import javax.crypto.spec.PBEKeySpec;
+import javax.crypto.spec.SecretKeySpec;
 import java.io.*;
 import java.security.Key;
 import java.security.SecureRandom;
+import java.security.spec.KeySpec;
+import java.util.Base64;
+import java.util.Scanner;
 
 /** 非对称加密，提供一个Key，又加密又解密 */
 public class MyCipherAES {
-    private static String tempFile = "D:\\code\\java\\hhyingzi_JavaUtils\\src\\main\\java\\Datas\\temp.txt";
-    private static String temp2File = "D:\\code\\java\\hhyingzi_JavaUtils\\src\\main\\java\\Datas\\temp2.txt";
-    private static String keyFile = "D:\\code\\java\\hhyingzi_JavaUtils\\src\\main\\java\\Datas\\temp3.txt";
+    private static String originFile = "D:\\code\\java\\hhyingzi_JavaUtils\\src\\main\\java\\Datas\\temp.txt";  //原始文件 originFile
+    private static String encryptedFile = "D:\\code\\java\\hhyingzi_JavaUtils\\src\\main\\java\\Datas\\temp2.txt";  //加密后的文件 encryptedFile
+    private static String keyFile = "D:\\code\\java\\hhyingzi_JavaUtils\\src\\main\\java\\Datas\\temp3.txt";  //密钥文件
 
-    public enum AlgorithmsEnum {AES, DES, CBC, PKCS5Padding}
-    public static String algorithm = AlgorithmsEnum.AES.name();
+    //设定加密算法，用字符串形式的 algorithm 变量来使用。
+    public static String algorithm = "AES";
 
-    public static Key key = null;
+    //加密所使用的密钥对象 Key
+    public static Key key = null;  //从密钥文件中解析出来的 Key
 
-    /** 根据传入的加密方式 Algorithm，生成一个 Key，输出到文件中，并返回 */
-    public static void myGenerateKey(String algo){
+    /***** Begin:生成 key *****/
+    /** 生成随机 key */
+    public static void myGenerateRandomKey(String algo){
+        //根据传入的加密方式 Algorithm，生成一个二进制文件 Key，保存为 keyFile
         try(ObjectOutputStream out = new ObjectOutputStream(new FileOutputStream(keyFile))){
             KeyGenerator keyGenerator = KeyGenerator.getInstance(algo);
             SecureRandom random = new SecureRandom(); //比 Random 更安全的随机数生成器
@@ -28,21 +36,69 @@ public class MyCipherAES {
             out.writeObject(key);
         }catch (Exception e){ e.printStackTrace(); }
     }
-    /** 从文件中读取 Key，存入类变量 */
+    /** 从文件 keyFile 中读取二进制 Key，解析为 Key 变量 key */
     public static void myGetKeyFromFile(String keyFile){
         try(ObjectInputStream in = new ObjectInputStream(new FileInputStream(keyFile))){
             MyCipherAES.key = (Key) in.readObject();
         }catch (Exception e){ e.printStackTrace(); }
     }
+    /***** End:生成 key *****/
+
+    /** 从控制台输入一个字符串作为密码，解析为 Key 变量 key */
+    public static void myGetKeyFromConsole(){
+        try(Scanner scanner = new Scanner(System.in)){
+            System.out.println("Please input a key String: ");
+            if(scanner.hasNext()){
+                String keyStr = scanner.next();
+//                byte[] salt = new byte[]{1, 2, 3, 4, 5, 6, 'a', 'b', 'c'};  //随便设置盐混淆
+//                KeySpec keySpec = new PBEKeySpec(keyStr.toCharArray(), salt, 100);
+//                SecretKeyFactory secretKeyFactory = SecretKeyFactory.getInstance("AES");
+//                byte[] keyBytes = secretKeyFactory.generateSecret(keySpec).getEncoded();
+
+                MyCipherAES.key = new SecretKeySpec(keyStr.getBytes(), MyCipherAES.algorithm);
+//                MyCipherAES.key = new SecretKeySpec(keyBytes, "AES");
+                System.out.println(MyCipherAES.key);
+            }
+        }catch (Exception e){e.printStackTrace();}
+    }
+
+    /***** Begin:加密解密 *****/
+    /**
+     * 字符串加密
+     */
+    public static void myEncryptString(String originString, String encryptedString){
+
+    }
 
     /**
-     * 文件加密/解密
-     * @param in_file 原始数据文件
-     * @param out_file 加密后的文件
+     * 字符串解密
+     */
+    public static void myDecryptString(String encryptedString, String originString){
+
+    }
+
+    /**
+     * 对文件加密
+     * @param originFile 原始文件
+     * @param encryptedFile 加密后的文件
+     */
+    public static void myEncryptFile(String originFile, String encryptedFile){ myFileEncryptOrDecrypt(originFile, encryptedFile, MyCipherAES.key, true); }
+
+    /**
+     * 对文件解密
+     * @param encryptedFile 加密后的文件
+     * @param originFile 解密后的文件
+     */
+    public static void myDecryptFile(String encryptedFile, String originFile){ myFileEncryptOrDecrypt(encryptedFile, originFile, MyCipherAES.key, false); }
+
+    /**
+     * 辅助方法：文件加密/解密
+     * @param in_file 输入的文件
+     * @param out_file 输出的文件
      * @param key 用于加密的 key
      * @param doEncrypt true 为加密，false 为解密
      * */
-    public static void myFileEncryptOrDecrypt(String in_file, String out_file, Key key, boolean doEncrypt) {
+    private static void myFileEncryptOrDecrypt(String in_file, String out_file, Key key, boolean doEncrypt) {
         try (
                 FileInputStream fileInputStream = new FileInputStream(in_file);
                 FileOutputStream fileOutputStream = new FileOutputStream(out_file)
@@ -51,10 +107,8 @@ public class MyCipherAES {
             int mode;
             //加密模式
             if (doEncrypt) mode = Cipher.ENCRYPT_MODE;
-                //解密模式
-            else{
-                mode = Cipher.DECRYPT_MODE;
-            }
+            //解密模式
+            else mode = Cipher.DECRYPT_MODE;
 
             // 获得一个 Cipher 密码对象
             Cipher cipher = Cipher.getInstance(MyCipherAES.algorithm);
@@ -80,20 +134,12 @@ public class MyCipherAES {
         } catch (Exception e) { e.printStackTrace(); }
     }
 
-    //从文件中读取key，设置到 Test.key ，并返回。
-    public static Key mySetKeyFromFile(String key_file){
-        try(ObjectInputStream objectInputStream = new ObjectInputStream(new FileInputStream(key_file))){
-            MyCipherAES.key = (Key) objectInputStream.readObject();
-            return MyCipherAES.key;
-        }catch (Exception e){ e.printStackTrace(); }
-        return null;
-    }
-
-    /** 加密/解密 IO 流 */
-    //加密
+    /**
+     * IO 流加密
+     */
     public static void myStreamEncrypt(InputStream inputStream, OutputStream outputStream, Key key) throws Exception{
-        Cipher cipher = Cipher.getInstance(MyCipherAES.algorithm);
-        cipher.init(Cipher.ENCRYPT_MODE, key);
+        Cipher cipher = Cipher.getInstance("AES/ECB/PKCS5Padding");
+        cipher. init(Cipher.ENCRYPT_MODE, key);
         try(CipherOutputStream out = new CipherOutputStream(outputStream, cipher)) {
             int inBlockSize = cipher.getBlockSize();
             byte[] inBlockBytes = new byte[inBlockSize];
@@ -106,10 +152,12 @@ public class MyCipherAES {
         }
     }
 
-    //解密
+    /**
+     * IO 流解密
+     */
     public static void myStreamDecrypt(InputStream inputStream, OutputStream outputStream, Key key)throws Exception{
             Cipher cipher = Cipher.getInstance(MyCipherAES.algorithm);
-            cipher.init(Cipher.DECRYPT_MODE, key);
+            cipher.init(Cipher.DECRYPT_MODE, key);  //用密钥 key 初始化此 Cipher
             CipherInputStream in = new CipherInputStream(inputStream, cipher); //用 CipherInputStream 包装输入流，输入时直接读取解密后的数据
 
             int outBlockSize = 1024;
@@ -120,33 +168,81 @@ public class MyCipherAES {
                 outputStream.write(outBlockBytes, 0, readLenth);
             }
     }
+    /***** End:加密解密 *****/
 
-    public static void main(String[] args){
+    /***** 测试类 *****/
+    public static void testWithString(){
+        try{
+            MyCipherAES.myGetKeyFromConsole();  //从控制台输入 AES 密钥并解析到 MyCipherAES.key 变量
+
+            String plainText = "hello, 123, 滑滑的影子";
+            Cipher cipher = Cipher.getInstance("AES/ECB/PKCS5Padding");
+            cipher.init(Cipher.ENCRYPT_MODE, MyCipherAES.key);
+            byte[] encryptedBytes = cipher.doFinal(plainText.getBytes());
+            System.out.println("加密后文本：" + Base64.getEncoder().encodeToString(encryptedBytes));
+        }catch (Exception e){e.printStackTrace();}
+    }
+
+    public static void testWithFile(){
         //设定加密算法
-        MyCipherAES.algorithm = AlgorithmsEnum.AES.name();
+        MyCipherAES.algorithm = "AES";
 
-        //获取 key
-//        Test.myGenerateKey(Test.algorithm);  //生成新 key ，并写入文件
-        myGetKeyFromFile(keyFile);  //从文件中读取 key，存入类变量。
+        /***** begin: 生成key文件，以及从文件中读取key *****/
+        //MyCipherAES.myGenerateKey(MyCipherAES.algorithm);  //生成新 key ，并写入文件
+//        MyCipherAES.myGetKeyFromFile(keyFile);  //从文件中读取 key，存入类变量。
+        /***** end：生成key文件，以及从文件中读取key *****/
+
+        /***** begin: 从控制台输入key *****/
+        //MyCipherAES.myGetKeyFromConsole();
+        /***** end：从控制台输入key *****/
 
         //将 tempFile 文件加密，输出至 temp2File 文件中。
-        MyCipherAES.myFileEncryptOrDecrypt(MyCipherAES.tempFile, MyCipherAES.temp2File, MyCipherAES.key, true);
+        MyCipherAES.myFileEncryptOrDecrypt(MyCipherAES.originFile, MyCipherAES.encryptedFile, MyCipherAES.key, true);
 //        //从文件读取 Key，并解密
-        MyCipherAES.myFileEncryptOrDecrypt(MyCipherAES.temp2File, MyCipherAES.tempFile, MyCipherAES.key, false);
+        MyCipherAES.myFileEncryptOrDecrypt(MyCipherAES.encryptedFile, MyCipherAES.originFile, MyCipherAES.key, false);
 
         //通过输出流进行编码
         try(
-                FileInputStream in = new FileInputStream(tempFile);
-                FileOutputStream out = new FileOutputStream(temp2File);
+                FileInputStream in = new FileInputStream(originFile);
+                FileOutputStream out = new FileOutputStream(encryptedFile);
         ) {
             MyCipherAES.myStreamEncrypt(in, out, MyCipherAES.key);  //temp.txt 加密到 temp2.txt
         }catch (Exception e){ e.printStackTrace(); }
         //通过输入流进行解码
         try(
-                FileInputStream in = new FileInputStream(temp2File);
-                FileOutputStream out = new FileOutputStream(tempFile);
+                FileInputStream in = new FileInputStream(encryptedFile);
+                FileOutputStream out = new FileOutputStream(originFile);
         ) {
             MyCipherAES.myStreamDecrypt(in, out, MyCipherAES.key);  //temp2.txt 解密到 temp.txt
         }catch (Exception e){ e.printStackTrace(); }
+    }
+
+    //测试IO流的加密解密
+    public static void testWithIO(){
+        MyCipherAES.algorithm = "AES"; //设定加密算法
+        MyCipherAES.myGetKeyFromConsole();  //从控制台输入 AES 密钥并解析到 MyCipherAES.key 变量
+
+        //通过输出流进行加密
+        try(
+                FileInputStream in = new FileInputStream(originFile);
+                FileOutputStream out = new FileOutputStream(encryptedFile);
+        ) {
+            MyCipherAES.myStreamEncrypt(in, out, MyCipherAES.key);  //temp.txt 加密到 temp2.txt
+        }catch (Exception e){ e.printStackTrace(); }
+
+        //通过输入流进行解密
+        try(
+                FileInputStream in = new FileInputStream(encryptedFile);
+                FileOutputStream out = new FileOutputStream(originFile);
+        ) {
+            MyCipherAES.myStreamDecrypt(in, out, MyCipherAES.key);  //temp2.txt 解密到 temp.txt
+        }catch (Exception e){ e.printStackTrace(); }
+
+    }
+
+    public static void main(String[] args){
+//        MyCipherAES.test();
+
+        MyCipherAES.testWithString();
     }
 }

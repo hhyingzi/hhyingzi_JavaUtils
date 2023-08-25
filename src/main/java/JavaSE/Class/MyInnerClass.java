@@ -11,6 +11,8 @@ public class MyInnerClass {
 
         C1.C2.C3 c30 = myInnerClass.new C1().new C2().new C3();
         c30.getName();
+
+        MyInnerClass.D1.test();
     }
 
     class C1{
@@ -26,5 +28,9 @@ public class MyInnerClass {
                 }
             }
         }
+    }
+
+    static class D1{
+        static void test(){};
     }
 }

@@ -4,9 +4,13 @@ import java.io.*;
 import java.nio.channels.Channels;
 import java.nio.channels.FileChannel;
 import java.nio.charset.Charset;
+import java.nio.file.*;
 import java.text.SimpleDateFormat;
+import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Arrays;
 import java.util.Date;
+import java.util.Random;
 import java.util.Scanner;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -181,7 +185,7 @@ public class MyIO {
                 temp = temp.trim();
                 Matcher matcher = pattern.matcher(temp);
                 if(matcher.matches()){
-                    sb.append(matcher.group(1) + " | ");  //第一行，构造函数
+                    sb.append("--- | " + matcher.group(1) + " | ");  //第一行，构造函数
                 }
                 if((temp=in.readLine()) != null){
                     sb.append(temp.trim() + "\n");  //第二行，说明行
@@ -195,21 +199,23 @@ public class MyIO {
     //将 API 中复制的带返回值函数，转化为有道云表格
     //Pattern.compile("(([\\w]+\\s+)+)(.*)");  第一版，思路是将方法说明行以空格分割，前面的内容组合起来，都是返回值，最后一部分是函数本体。
     //Pattern.compile("(([\\w<,>\\.\?\&\\[\\]]+\\s+)+)(.*)"); 第二版，增加对泛型<E>符号，泛型多参数之间的逗号，泛型中的?号，泛型中的 & 号，内部类 Class.InnerClass的点号，数组[]符号的识别
+    //Pattern.compile("(([\\w<,>\\.\?\&\\[\\]​​\u200B]+\\s+)+)(.*)")  第三版，增加 unicode 特殊符号：\u200B
     public void myStringConvertYoudaoTable2(){
         String filePath = dataFile;
         try{
             BufferedReader in = new BufferedReader(new FileReader(filePath));
             String temp;
             StringBuilder sb = new StringBuilder();
-            Pattern pattern = Pattern.compile("(([\\w<>,\\.\\?\\&\\[\\]]+\\s+)+)(.*)");  //有返回值的普通方法。返回值：((\w+\s+)+) ，函数：(.*)
+            Pattern pattern = Pattern.compile("(([\\w<,>\\.\\?\\&\\[\\]\\u200B]+\\s+)+)(.*)");  //有返回值的普通方法。返回值：((\w+\s+)+) ，函数：(.*)
             while((temp=in.readLine()) !=  null){
                 temp = temp.trim();
+                temp = temp.replaceAll("\t", " ");  //替换 \t 为空格
                 Matcher matcher = pattern.matcher(temp);
                 if(matcher.matches()){
-                    sb.append(matcher.group(1).trim() + " | " + matcher.group(3).trim() + " | ");  //第一行，带返回值的方法。其中group(2)是大括号里的小括号，忽略这个分组
-                }
+                    sb.append(matcher.group(1).replaceAll("\\u200B", " ").trim() + " | " + matcher.group(3).replaceAll("\\u200B", " ").trim() + " | ");  //第一行，带返回值的方法。其中group(2)是大括号里的小括号，忽略这个分组
+                }else{ sb.append("=====未识别=====" + temp + " | "); }
                 if((temp=in.readLine()) != null){
-                    sb.append(temp.trim() + "\n");  //第二行，说明行
+                    sb.append(temp.trim().replaceAll("\\u200B", " ") + "\n");  //第二行，说明行
                 }
             }
             System.out.println(sb.toString());
@@ -217,6 +223,26 @@ public class MyIO {
             e.printStackTrace();
         }
     }
+    //（Java 18）将 API 中复制的带返回值函数，转化为有道云表格
+    //第一行是返回值；第二行是函数；第三行是函数说明
+    public void myStringConvertYoudaoTable3(){
+        String filePath = dataFile;
+        try(BufferedReader in = new BufferedReader(new FileReader(filePath))){
+            String temp;
+            StringBuilder sb = new StringBuilder();
+            while((temp=in.readLine()) !=  null){  //每次读取一整个条目（3行）
+                //第一行：函数返回值
+                temp = temp.trim().replaceAll("\t", " ");  //替换 \t 为空格
+                sb.append(temp + " | ");
+                //第二行：函数本身
+                if((temp=in.readLine()) != null) sb.append(temp.trim().replaceAll("\\u200B", " ") + " | ");
+                //第三行：函数说明
+                if((temp=in.readLine()) != null) sb.append(temp.trim().replaceAll("\\u200B", " ") + "\n");
+            }
+            System.out.println(sb.toString());
+        }catch (Exception e){ e.printStackTrace(); }
+    }
+
     //一键更新文件/文件夹最新修改时间
     public void myFileOrDirModifyTimes(){
         final String DEFAULT_PATH = dataFile;
@@ -269,17 +295,51 @@ public class MyIO {
             }
         }catch (Exception e){e.printStackTrace();}
     }
+    /*+++++ 常用工具方法 +++++*/
+    public void myWatchService(){
+        try{
+            WatchService watchService = FileSystems.getDefault().newWatchService();
+            Paths.get(this.dataFile).getParent().register(watchService, StandardWatchEventKinds.ENTRY_MODIFY);  //注册监听：dataFile 所在目录下发生文件修改
+            System.out.println("+++++ Watch Service 开始运行 +++++\n\n");
+            while(true){
+                WatchKey watchKey = watchService.take();
+                Thread.sleep(300);  //文件更改后，等待操作系统写入新的文件信息，再继续执行。
+                for(WatchEvent<?> event: watchKey.pollEvents()){
+//                    if(!event.context().toString().equals("temp.txt___jb_tmp___")) continue;  //IDEA修改文件，会体现到 temp.txt___jb_tmp___ 的修改
+                    if(!event.context().toString().equals("temp.txt")) continue;
+                    System.out.println("\n\n\n\n\n" + event.context() + "文件发生了" + event.kind() + "事件" + LocalTime.now().format(DateTimeFormatter.ofPattern("HH:mm:ss")));
+                    /* +++识别 temp.txt 中的 JAVA API，并转换为 markdown+++ */
+                    System.out.println("===========================================");
+                    myStringConvertYoudaoTable1();  //构造函数
+                    System.out.println("===========================================");
+                    myStringConvertYoudaoTable2();  //普通函数或字段（带返回值）
+//                    myStringConvertYoudaoTable3();  //(Java18)普通函数或字段（带返回值）
+                    System.out.println("\n【" +  new Random().nextInt(1000) + "】输出完毕。" + LocalTime.now().format(DateTimeFormatter.ofPattern("HH:mm:ss")));
+                    /* ---识别 temp.txt 中的 JAVA API，并转换为 markdown--- */
+                }
+                //事件处理后，重设 watchKey
+                Thread.sleep(300);
+                if(!watchKey.reset()){
+                    System.out.println("重设 WatchKey 失败，无法继续监听。程序退出。"); return;
+                }
+            }
+        }catch (Exception e){e.printStackTrace();}
+        System.out.println("----- Watch Service 已关闭. -----");
+    }
+    /*----- 常用工具方法 -----*/
 
     public static void main(String[] args){
         MyIO myIO = new MyIO();
 
+        myIO.myWatchService();
+
         /* 将 API 转化为有道云表格 */
         //构造函数
-        myIO.myStringConvertYoudaoTable1();
+//        myIO.myStringConvertYoudaoTable1();
 
-        System.out.println("===========================================");
+//        System.out.println("===========================================");
         //普通函数或字段（带返回值）
-        myIO.myStringConvertYoudaoTable2();
+//        myIO.myStringConvertYoudaoTable2();
 
         //修改文件最新修改日期
 //        myIO.myFileOrDirModifyTimes();

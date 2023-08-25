@@ -9,7 +9,7 @@ import java.nio.file.Paths;
 import java.security.MessageDigest;
 
 /** 生成数字摘要的工具类：MD5, SHA-1, SHA-256, SHA-384, SHA-512。 */
-public class MyMessageDigest {
+public class MyMessageDigestMD5 {
     private static final String algorithm = "MD5";
     private static final String str = "Hello.";
     private static final String dataFile = "D:\\code\\java\\hhyingzi_JavaUtils\\src\\main\\java\\Datas\\temp.txt";
