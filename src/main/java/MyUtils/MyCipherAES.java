@@ -1,5 +1,7 @@
 package MyUtils;
 
+import TempProject.Test;
+
 import javax.crypto.*;
 import javax.crypto.spec.PBEKeySpec;
 import javax.crypto.spec.SecretKeySpec;
@@ -16,15 +18,23 @@ public class MyCipherAES {
     private static String encryptedFile = "D:\\code\\java\\hhyingzi_JavaUtils\\src\\main\\java\\Datas\\temp2.txt";  //加密后的文件 encryptedFile
     private static String keyFile = "D:\\code\\java\\hhyingzi_JavaUtils\\src\\main\\java\\Datas\\temp3.txt";  //密钥文件
 
+    //生成 key 的参数
+    //pbe通过 password 和盐，生成 Key
+    public static final String ALGORITHM = "PBKDF2WithHmacSHA256";//PBKDF2WithHmacSHA256 PBEWithHmacSHA512AndAES_256
+    public byte[] salt = {(byte) 0x01, (byte) 0x02, (byte) 0x03, (byte) 0x04, (byte) 0x05, (byte) 0x06, (byte) 0x07, (byte) 0x08};  //PBE的盐8位足矣，32位最佳
+    public int iterationCount = 1000;
+    public String keyAlgorithm = "AES";  //生成的 key 的算法。有"AES", "PBE"
+    public Key key;  //密钥。使用 getEncoded() 可转为 byte[]。
+
     //设定加密算法，用字符串形式的 algorithm 变量来使用。
     public static String algorithm = "AES";
 
     //加密所使用的密钥对象 Key
     public static Key key = null;  //从密钥文件中解析出来的 Key
 
-    /***** Begin:生成 key *****/
+    /* ##### Begin:生成 key ##### */
     /** 生成随机 key */
-    public static void myGenerateRandomKey(String algo){
+    public void myGenerateRandomKey(String algo){
         //根据传入的加密方式 Algorithm，生成一个二进制文件 Key，保存为 keyFile
         try(ObjectOutputStream out = new ObjectOutputStream(new FileOutputStream(keyFile))){
             KeyGenerator keyGenerator = KeyGenerator.getInstance(algo);
@@ -37,15 +47,35 @@ public class MyCipherAES {
         }catch (Exception e){ e.printStackTrace(); }
     }
     /** 从文件 keyFile 中读取二进制 Key，解析为 Key 变量 key */
-    public static void myGetKeyFromFile(String keyFile){
+    public void myGetKeyFromFile(String keyFile){
         try(ObjectInputStream in = new ObjectInputStream(new FileInputStream(keyFile))){
             MyCipherAES.key = (Key) in.readObject();
         }catch (Exception e){ e.printStackTrace(); }
     }
-    /***** End:生成 key *****/
+
+    /** 根据字符串 password 生成 key */
+    //根据字符串生成 key
+    public Key getKeyFromPassword(String password){
+        String ALGORITHM = "PBKDF2WithHmacSHA256";//PBKDF2WithHmacSHA256 PBEWithHmacSHA512AndAES_256
+        byte[] salt = {(byte) 0x01, (byte) 0x02, (byte) 0x03, (byte) 0x04, (byte) 0x05, (byte) 0x06, (byte) 0x07, (byte) 0x08};  //PBE的盐8位足矣，32位最佳
+        int iterationCount = 1000;
+        String keyAlgorithm = "AES";  //从 byte[] 形式的key字节数组，生成 SecretKeySpec 时候，所用的密钥算法。有"AES", "PBE"
+        Key key;  //密钥。使用 getEncoded() 可转为 byte[]。使用 new SecretKeySpec(byte[] keyBytes, String algorithm) 可以读取 byte[] 生成 key。
+
+        try{
+            PBEKeySpec pbeKeySpec = new PBEKeySpec(password.toCharArray(), salt, this.iterationCount, 256);  //PBE key 规范
+            SecretKeyFactory keyFactory = SecretKeyFactory.getInstance(Test.ALGORITHM);  //密钥工厂，使用 PBKDF2 算法
+            Key pbeKey = keyFactory.generateSecret(pbeKeySpec);  //向密钥工厂传入 PBE key 规范，生成密钥 key
+
+            byte[] keyBytes = pbeKey.getEncoded();  //正式拿来使用的byte[]形式的 key
+            this.key = new SecretKeySpec(keyBytes, this.keyAlgorithm);  //默认 "AES"
+//            this.key = pbeKey;
+        }catch (Exception e){e.printStackTrace();}
+    }
+    /* ##### End:生成 key ##### */
 
     /** 从控制台输入一个字符串作为密码，解析为 Key 变量 key */
-    public static void myGetKeyFromConsole(){
+    public void myGetKeyFromConsole(){
         try(Scanner scanner = new Scanner(System.in)){
             System.out.println("Please input a key String: ");
             if(scanner.hasNext()){
@@ -55,7 +85,7 @@ public class MyCipherAES {
 //                SecretKeyFactory secretKeyFactory = SecretKeyFactory.getInstance("AES");
 //                byte[] keyBytes = secretKeyFactory.generateSecret(keySpec).getEncoded();
 
-                MyCipherAES.key = new SecretKeySpec(keyStr.getBytes(), MyCipherAES.algorithm);
+                MyCipherAES.key = new SecretKeySpec(keyStr.getBytes(), this.keyAlgorithm);
 //                MyCipherAES.key = new SecretKeySpec(keyBytes, "AES");
                 System.out.println(MyCipherAES.key);
             }
@@ -155,8 +185,8 @@ public class MyCipherAES {
     /**
      * IO 流解密
      */
-    public static void myStreamDecrypt(InputStream inputStream, OutputStream outputStream, Key key)throws Exception{
-            Cipher cipher = Cipher.getInstance(MyCipherAES.algorithm);
+    public void myStreamDecrypt(InputStream inputStream, OutputStream outputStream, Key key)throws Exception{
+            Cipher cipher = Cipher.getInstance(this.keyAlgorithm);
             cipher.init(Cipher.DECRYPT_MODE, key);  //用密钥 key 初始化此 Cipher
             CipherInputStream in = new CipherInputStream(inputStream, cipher); //用 CipherInputStream 包装输入流，输入时直接读取解密后的数据
 
@@ -171,9 +201,9 @@ public class MyCipherAES {
     /***** End:加密解密 *****/
 
     /***** 测试类 *****/
-    public static void testWithString(){
+    public void testWithString(){
         try{
-            MyCipherAES.myGetKeyFromConsole();  //从控制台输入 AES 密钥并解析到 MyCipherAES.key 变量
+            myGetKeyFromConsole();  //从控制台输入 AES 密钥并解析到 MyCipherAES.key 变量
 
             String plainText = "hello, 123, 滑滑的影子";
             Cipher cipher = Cipher.getInstance("AES/ECB/PKCS5Padding");
@@ -183,7 +213,7 @@ public class MyCipherAES {
         }catch (Exception e){e.printStackTrace();}
     }
 
-    public static void testWithFile(){
+    public void testWithFile(){
         //设定加密算法
         MyCipherAES.algorithm = "AES";
 
@@ -218,8 +248,8 @@ public class MyCipherAES {
     }
 
     //测试IO流的加密解密
-    public static void testWithIO(){
-        MyCipherAES.algorithm = "AES"; //设定加密算法
+    public void testWithIO(){
+        this.keyAlgorithm = "AES"; //设定加密算法
         MyCipherAES.myGetKeyFromConsole();  //从控制台输入 AES 密钥并解析到 MyCipherAES.key 变量
 
         //通过输出流进行加密
