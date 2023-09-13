@@ -165,19 +165,52 @@ public class MyCipherAES {
         }catch (Exception e){e.printStackTrace();}
         return null;
     }
+    /** 小文件加密（代码可读性比大文件加密好） */
+    public void encryptTinyFile(String originFile, String encryptedFile){
+        tinyFileEncryptOrDecrypt(originFile, encryptedFile, this.key, true);
+    }
+    public void decryptTinyFile(String encryptedFile, String originFile){
+        tinyFileEncryptOrDecrypt(encryptedFile, originFile, this.key, false);
+    }
+    private void tinyFileEncryptOrDecrypt(String inFile, String outFile, Key key, boolean doEncrypt){
+        try(
+                FileInputStream fileInputStream = new FileInputStream(inFile);
+                FileOutputStream fileOutputStream = new FileOutputStream(outFile)
+        ) {
+            //检查文件存在
+            File file = new File(inFile);
+            if(!file.exists()){ System.out.println("文件不存在！ " + inFile); return;}
+            //检查文件长度（2GB以内，取一半）
+            long fileLength = file.length();
+            if(fileLength >= 1*1024*1024*1024){ System.out.println("文件超过2GB，加密解密请使用 encryptFile() 或 decryptFile()函数。" + inFile); return; }
 
-    /** 对文件加密，由 originFile 生成到 encryptedFile */
+            //判断加密还是解密模式
+            int mode;
+            if (doEncrypt) mode = Cipher.ENCRYPT_MODE; //加密模式
+            else mode = Cipher.DECRYPT_MODE; //解密模式
+            // 获得一个 Cipher 密码对象
+            Cipher cipher = Cipher.getInstance("AES/ECB/PKCS5Padding");
+            cipher.init(mode, this.key);
+            //加密/解密
+            byte[] fileBytes = fileInputStream.readAllBytes();
+            byte[] encryptedBytes = cipher.doFinal(fileBytes); //加密/解密
+            fileOutputStream.write(encryptedBytes); //保存
+        } catch (Exception e) { e.printStackTrace(); }
+    }
+
+    /** 对大文件加密，由 originFile 生成到 encryptedFile */
     public void encryptFile(String originFile, String encryptedFile){
         myFileEncryptOrDecrypt(originFile, encryptedFile, this.key, true);
     }
 
-    /** 对文件解密，由 encryptedFile 生成到decryptedFile */
+    /** 对大文件解密，由 encryptedFile 生成到decryptedFile */
     public void decryptFile(String encryptedFile, String originFile){
         myFileEncryptOrDecrypt(encryptedFile, originFile, this.key, false);
     }
 
+
     /**
-     * 辅助方法：文件加密/解密
+     * 辅助方法：大文件加密/解密
      * @param in_file 输入的文件
      * @param out_file 输出的文件
      * @param key 用于加密的 key
@@ -367,6 +400,16 @@ public class MyCipherAES {
         decryptFile(MyCipherAES.encryptedFile, MyCipherAES.decryptedFile);
     }
 
+    public void testWithTinyFile(){
+        this.keySpecAlgorithm = "AES";  //设置key的算法为"AES"，用于后续 AES/ECB、AES/CBC 加密。
+        generateRandomKey();  //生成新 key
+
+        //加密：将 originFile 文件加密，输出至 encryptedFile 文件中。
+        encryptTinyFile(MyCipherAES.originFile, MyCipherAES.encryptedFile);
+        //解密：从 encryptedFile 文件读取密文，并解密到 decryptedFile 文件中。
+        decryptTinyFile(MyCipherAES.encryptedFile, MyCipherAES.decryptedFile);
+    }
+
     //测试IO流的 AES/ECB 加密解密，要求使用的 this.key 是 AES 算法。
     public void testWithIO(){
         this.keySpecAlgorithm = "AES";  //设置key的算法为"AES"，用于后续 AES/ECB、AES/CBC 加密。
@@ -392,6 +435,6 @@ public class MyCipherAES {
     public static void main(String[] args){
         MyCipherAES myCipherAES = new MyCipherAES();
 //        myCipherAES.testWithString();
-        myCipherAES.exampleAES_CBC();
+        myCipherAES.testWithTinyFile();
     }
 }
