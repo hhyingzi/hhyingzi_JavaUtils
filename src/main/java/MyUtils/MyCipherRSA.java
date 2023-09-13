@@ -76,7 +76,7 @@ public class MyCipherRSA {
 
             //用 AES 加密文件本身，并写入到文件
             //注意！！！！！我不知道这里提供的输出流，在工具类中会不会覆盖掉我已经输出的内容
-            MyUtils.MyCipherAES.myStreamEncrypt(in, out, key);  //调用自己写的AES加密工具对文件进行加密流输出
+//            MyUtils.MyCipherAES.myStreamEncrypt(in, out, key);  //调用自己写的AES加密工具对文件进行加密流输出
         } catch (Exception e) { e.printStackTrace(); }
     }
 
@@ -96,7 +96,7 @@ public class MyCipherRSA {
             cipherAES.init(Cipher.UNWRAP_MODE, keyPrivate);
             Key key = cipherAES.unwrap(wrappedKey, "AES", Cipher.SECRET_KEY);
             //读取文件后部分的加密数据，并用 AES key 解密，最后输出到文件中
-            MyUtils.MyCipherAES.myStreamDecrypt(in, out, key);
+//            MyUtils.MyCipherAES.myStreamDecrypt(in, out, key);
         } catch (Exception e) { e.printStackTrace(); }
     }
 
