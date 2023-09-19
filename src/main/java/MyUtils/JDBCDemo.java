@@ -16,7 +16,7 @@ class JDBCDemo {
     // JDBC连接信息
     private static final String JDBC_URL = "jdbc:mysql://47.110.147.155:3306/mybatis";
     private static final String JDBC_USERNAME = "hhyingzi";
-    private static final String JDBC_PASSWORD = "123456";
+    private static final String JDBC_PASSWORD = "";  //
 
     public static void main(String[] args) {
 //        // 加载JDBC驱动程序
