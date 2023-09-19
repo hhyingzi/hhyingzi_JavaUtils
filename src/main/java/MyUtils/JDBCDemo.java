@@ -1,7 +1,17 @@
-package TempProject;
+package MyUtils;
 
 import java.sql.*;
 
+/**
+ * JDBC 增删改查示例。
+ * 环境要求（建议）：
+ *      mysql版本：5.7.42
+ *      pom：mysql-connector-java  5.1.49
+ *      用户名: hhyingzi
+ *      密码：1****6
+ *      数据库：mybatis
+ *      表名：temp_users
+ */
 class JDBCDemo {
     // JDBC连接信息
     private static final String JDBC_URL = "jdbc:mysql://47.110.147.155:3306/mybatis";
@@ -66,8 +76,9 @@ class JDBCDemo {
                 + ")";
 
         try (
+                //用Statement 对象执行 DDL（数据定义语言），如 CREATE TABLE
                 Statement statement = conn.createStatement()) {
-            // 检查表是否已存在
+            //检查表是否已存在
             ResultSet resultSet = conn.getMetaData().getTables(null, null, "temp_users", null);
             if (resultSet.next()) {
                 System.out.println("Table already exists.");
@@ -83,6 +94,7 @@ class JDBCDemo {
     // 插入数据
     private static void insertData(Connection conn, String name, int age) throws SQLException {
         String sql = "INSERT INTO temp_users (name, age) VALUES (?, ?)";
+        //用 PreparedStatement 执行 SQL 查询和更新操作
         PreparedStatement statement = conn.prepareStatement(sql);
         statement.setString(1, name);
         statement.setInt(2, age);
@@ -122,11 +134,5 @@ class JDBCDemo {
         statement.setString(1, name);
         int rowsDeleted = statement.executeUpdate();
         System.out.println("成功删除 " + rowsDeleted + " 条数据");
-    }
-}
-
-public class Test {
-    public static void main(String[] args) throws Exception {
-        JDBCDemo.main(null);
     }
 }

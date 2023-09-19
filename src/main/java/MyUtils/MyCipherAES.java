@@ -182,7 +182,7 @@ public class MyCipherAES {
             if(!file.exists()){ System.out.println("文件不存在！ " + inFile); return;}
             //检查文件长度（2GB以内，取一半）
             long fileLength = file.length();
-            if(fileLength >= 1*1024*1024*1024){ System.out.println("文件超过2GB，加密解密请使用 encryptFile() 或 decryptFile()函数。" + inFile); return; }
+            if(fileLength >= 1*1024*1024*1024){ System.out.println("文件超过1GB，加密解密请使用 encryptFile() 或 decryptFile()函数。" + inFile); return; }
 
             //判断加密还是解密模式
             int mode;
@@ -207,7 +207,6 @@ public class MyCipherAES {
     public void decryptFile(String encryptedFile, String originFile){
         myFileEncryptOrDecrypt(encryptedFile, originFile, this.key, false);
     }
-
 
     /**
      * 辅助方法：大文件加密/解密

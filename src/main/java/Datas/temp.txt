@@ -1,1 +1,151 @@
-你好 hello123
+1.
+import java.util.*;
+
+// 注意类名必须为 Main, 不要有任何 package xxx 信息
+public class Main {
+    //检测勾股数a b c是否为勾股元祖（两两互质）
+    public static boolean isLeagal(int a, int b, int c){
+        if(isHuZhi(a, b) && isHuZhi(a, c) && isHuZhi(b, c)) return true;
+        else return false;
+    }
+    //检测两个数是否互质
+    public static boolean isHuZhi(int smallNum, int bigNum){
+        //遍历公约数
+        for(int temp=2; temp <= smallNum; temp++){
+            //如果 temp 是公约数，则两个数不互质
+            if(smallNum % temp == 0 && bigNum % temp == 0) return false;
+        }
+        return true;
+    }
+
+    public static void main(String[] args){
+        int N = 0, M = 0;
+        Scanner in = new Scanner(System.in);
+        if(in.hasNextInt()) N = in.nextInt();
+        if(in.hasNextInt()) M = in.nextInt();
+
+        ArrayList<Integer> results = new ArrayList<>();
+        int loop = 0;  //每对勾股数元组为 results.get(loop*3), results.get(loop*3+1), results.get(loop*3+2);
+
+        //求所有的勾股数
+//        int a = N, b = a + 1;
+//        double fakec = Math.sqrt(a*a + b*b);
+        //检测勾股数，是否符合要求，符合则为勾股数元组
+        for(int a = N; a <= M - 2; a++){
+            for(int b = a + 1; b <= M - 1; b++){
+                int abSum = a*a + b*b;
+                //检验 c 是否合法。合法则存在勾股数。
+                int c = (int)Math.round(Math.sqrt(abSum));  //long 转 int 去掉高位还是低位？
+                //c 必须在取值范围内，否则跳出循环。
+                if(c > M) break;
+                //c 必须为整数，否则不是勾股数，继续循环。
+                if(c * c != abSum) continue;
+                //检测勾股数是否为勾股元组
+                if(isLeagal(a, b, c)){
+                    results.add(a);
+                    results.add(b);
+                    results.add(c);
+                    loop++;
+                }
+            }
+        }
+
+        //输出所有勾股数
+        if(loop == 0){
+            System.out.println("NA");
+            return;
+        }
+        for(int i = 0; i < loop; i++){
+            System.out.println(results.get(i*3) + " " + results.get(i*3+1) + " " + results.get(i*3+2));
+        }
+    }
+}
+
+2.
+package TempProject;
+
+import java.util.*;
+
+// 注意类名必须为 Main, 不要有任何 package xxx 信息
+public class Main {
+    public static void main(String[] args) {
+        Scanner in = new Scanner(System.in);
+        //输入 -1 -3 7 5 11 15
+        List<Integer> arr = new ArrayList<>();
+        if(in.hasNextLine()){
+            String[] numStrs = in.nextLine().split("\\s");
+            for(String numStr: numStrs) arr.add(Integer.parseInt(numStr));
+        }
+        in.close();
+        Collections.sort(arr);  //输入排序
+        /*
+        * 思路：
+        * 1. 先排序。
+        * 2. 设置左右指针。从两边往中间去，直到指针相遇。
+        * 3. 循环遍历，求两指针和。和为负，左指针右移，和为正，右指针左移。
+        * */
+        int resultLeftIndex = 0, resultRightIndex = arr.size() - 1, resultSum;
+        //初始化 resultSum
+        if(resultRightIndex > 0) resultSum = arr.get(resultLeftIndex) + arr.get(resultRightIndex);
+        else return;
+
+        int leftIndex = 0, rightIndex = arr.size() - 1, sum;
+        while(leftIndex < rightIndex){
+            int leftValue = arr.get(leftIndex);
+            int rightValue = arr.get(rightIndex);
+            sum = leftValue + rightValue;
+
+            //最佳则直接返回
+            if(sum == 0){
+                System.out.println(arr.get(leftIndex) + " " + arr.get(rightIndex) + " " + sum);
+                return;
+            }
+            //产生更好的结果则更新
+            if(Math.abs(sum) < Math.abs(resultSum)){
+                resultLeftIndex = leftIndex;
+                resultRightIndex = rightIndex;
+                resultSum = sum;
+            }
+            //和为负，左指针右移
+            if(sum < 0){
+                leftIndex++;
+            }
+            //和为正，右指针左移
+            if(sum > 0){
+                rightIndex--;
+            }
+        }
+        System.out.println(arr.get(resultLeftIndex) + " " + arr.get(resultRightIndex) + " " + Math.abs(resultSum));
+    }
+}
+
+3 一堆石头，输入[num, [m1, m2, ..., mnum]] ，问能否平分成两组重量相等的，最少的一组数量是多少？输出该数量。如果不能，返回 -1。
+import java.util.*;
+
+// 注意类名必须为 Main, 不要有任何 package xxx 信息
+public class Main {
+    public static void main(String[] args){
+        //输入 n
+        int n = 0;  //n
+        Scanner in = new Scanner(System.in);
+        if(in.hasNextInt())  n = in.nextInt();
+        //输入 m
+        int[] mArr = new int[n];
+        for(int i=0; i<n; i++){
+            if(in.hasNextInt()) mArr[i] = in.nextInt();
+        }
+        //平分后每堆石头应有的的重量和
+        int halfWeight = 0;
+        for(int i=0; i<mArr.length; i++) halfWeight += mArr[i];
+        halfWeight /= 2;
+
+        //开始平分
+        int count = -1;  //当前堆石头的数量
+        int currWeight = 0;  //当前堆石头的重量
+        //包含有石头的栈
+        ArrayDeque<Integer> stack = new ArrayDeque<>();  //被分出去的石头
+
+        Main main = new Main();
+
+    }
+}
