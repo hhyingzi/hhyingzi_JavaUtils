@@ -7,6 +7,7 @@ import java.sql.*;
  * 环境要求（建议）：
  *      mysql版本：5.7.42
  *      pom：mysql-connector-java  5.1.49
+ *      host: 47.110.147.155:3306
  *      用户名: hhyingzi
  *      密码：1****6
  *      数据库：mybatis
@@ -14,9 +15,9 @@ import java.sql.*;
  */
 class JDBCDemo {
     // JDBC连接信息
-    private static final String JDBC_URL = "jdbc:mysql://47.110.147.155:3306/mybatis";
-    private static final String JDBC_USERNAME = "hhyingzi";
-    private static final String JDBC_PASSWORD = "";  //
+    private static final String JDBC_URL = "jdbc:mysql://myhost/mybatis";
+    private static final String JDBC_USERNAME = "";
+    private static final String JDBC_PASSWORD = "";
 
     public static void main(String[] args) {
 //        // 加载JDBC驱动程序

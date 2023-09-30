@@ -12,11 +12,22 @@ public class StartProject {
 		StartProject startProject = new StartProject();
 		watch.start();
 		/* 以下放入程序 */
-		System.out.println(Math.abs(-1));
+		int i=0;
+		i = startProject.test(i);
+		System.out.println(i);
 		/* 以上放入程序 */
 		watch.end();
+
+		int x = 5;
+
+		if(true) x = 10;
+
+		System.out.println("Outside runnable: " + x);
 	}
 
-	public void test(){
+	public int test(int i){
+		i++;
+		for(int j=0; j<3; j++) i++;
+		return i;
 	}
 }
