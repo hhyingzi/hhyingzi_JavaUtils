@@ -1,60 +1,13 @@
-abstract void	clearCache()
-Clears local session cache
-abstract void	close()
-Closes the session
-abstract void	commit(boolean force)
-Flushes batch statements and commits database connection.
-abstract void	commit()
-Flushes batch statements and commits database connection.
-abstract int	delete(String statement, Object parameter)
-Execute a delete statement.
-abstract int	delete(String statement)
-Execute a delete statement.
-abstract List<BatchResult>	flushStatements()
-Flushes batch statements.
-abstract Configuration	getConfiguration()
-Retrieves current configuration
-abstract Connection	getConnection()
-Retrieves inner database connection
-abstract <T> T	getMapper(Class<T> type)
-Retrieves a mapper.
-abstract int	insert(String statement)
-Execute an insert statement.
-abstract int	insert(String statement, Object parameter)
-Execute an insert statement with the given parameter object.
-abstract void	rollback(boolean force)
-Discards pending batch statements and rolls database connection back.
-abstract void	rollback()
-Discards pending batch statements and rolls database connection back.
-abstract void	select(String statement, Object parameter, RowBounds rowBounds, ResultHandler handler)
-Retrieve a single row mapped from the statement key and parameter using a ResultHandler and RowBounds
-abstract void	select(String statement, Object parameter, ResultHandler handler)
-Retrieve a single row mapped from the statement key and parameter using a ResultHandler.
-abstract void	select(String statement, ResultHandler handler)
-Retrieve a single row mapped from the statement using a ResultHandler.
-abstract <T> Cursor<T>	selectCursor(String statement, Object parameter, RowBounds rowBounds)
-A Cursor offers the same results as a List, except it fetches data lazily using an Iterator.
-abstract <T> Cursor<T>	selectCursor(String statement)
-A Cursor offers the same results as a List, except it fetches data lazily using an Iterator.
-abstract <T> Cursor<T>	selectCursor(String statement, Object parameter)
-A Cursor offers the same results as a List, except it fetches data lazily using an Iterator.
-abstract <E> List<E>	selectList(String statement, Object parameter)
-Retrieve a list of mapped objects from the statement key and parameter.
-abstract <E> List<E>	selectList(String statement, Object parameter, RowBounds rowBounds)
-Retrieve a list of mapped objects from the statement key and parameter, within the specified row bounds.
-abstract <E> List<E>	selectList(String statement)
-Retrieve a list of mapped objects from the statement key and parameter.
-abstract <K, V> Map<K, V>	selectMap(String statement, String mapKey)
-The selectMap is a special case in that it is designed to convert a list of results into a Map based on one of the properties in the resulting objects.
-abstract <K, V> Map<K, V>	selectMap(String statement, Object parameter, String mapKey, RowBounds rowBounds)
-The selectMap is a special case in that it is designed to convert a list of results into a Map based on one of the properties in the resulting objects.
-abstract <K, V> Map<K, V>	selectMap(String statement, Object parameter, String mapKey)
-The selectMap is a special case in that it is designed to convert a list of results into a Map based on one of the properties in the resulting objects.
-abstract <T> T	selectOne(String statement, Object parameter)
-Retrieve a single row mapped from the statement key and parameter.
-abstract <T> T	selectOne(String statement)
-Retrieve a single row mapped from the statement key
-abstract int	update(String statement, Object parameter)
-Execute an update statement.
-abstract int	update(String statement)
-Execute an update statement.
+--default-auth	Authentication plugin to use	
+--host	Host on which MySQL server is located	
+--password	Password to use when connecting to server	
+--password1	First multifactor authentication password to use when connecting to server	8.0.27
+--password2	Second multifactor authentication password to use when connecting to server	8.0.27
+--password3	Third multifactor authentication password to use when connecting to server	8.0.27
+--pipe	Connect to server using named pipe (Windows only)	
+--plugin-dir	Directory where plugins are installed	
+--port	TCP/IP port number for connection	
+--protocol	Transport protocol to use	
+--shared-memory-base-name	Shared-memory name for shared-memory connections (Windows only)	
+--socket	Unix socket file or Windows named pipe to use	
+--user	MySQL user name to use when connecting to server

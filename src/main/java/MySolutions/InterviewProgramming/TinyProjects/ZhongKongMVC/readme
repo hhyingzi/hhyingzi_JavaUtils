@@ -1,0 +1,27 @@
+# 题目
+写一个 Spring MVC 程序，进行分页查询。
+
+功能一：按商品名称 name 进行模糊查询，将查询结果分页显示。
+功能二：返回的 JSON 数据包括查询后的商品列表 goodsList 和符合条件的商品总数 total。
+
+# 环境配置
+## Mysql初始化脚本
+- host：47.110.147.155
+- port: 3306
+- MySQL用户名: root
+- MySQL登录密码: 123456
+```sql
+use mybatis;
+
+CREATE TABLE test(
+	id INT PRIMARY KEY,
+    name VARCHAR(100),
+    price DECIMAL(10, 2)
+);
+
+INSERT INTO test
+	(id, name, price)
+VALUES
+	(4, "GTX 1080", 2499.9),
+    (8, "RTX 3000", 5600);
+```

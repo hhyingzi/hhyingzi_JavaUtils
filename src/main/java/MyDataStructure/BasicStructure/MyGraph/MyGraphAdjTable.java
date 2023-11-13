@@ -1,21 +1,15 @@
-package MyDataStructure.BasicStructure;
+package MyDataStructure.BasicStructure.MyGraph;
 
 //import sun.awt.image.ImageWatched;
 
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.LinkedList;
+import java.util.*;
 
-/**
- * 图，邻接表结构
+/** 弃用，与书上不兼容，纯自嗨
+ * 有向有权图，邻接表结构
  * 顶点由 int 表示，边由 Edge(key1, key2) 表示。
  * 顶点集是以 int 值作为 key 的 HashMap。
  * 边集是以顶点的 key 作为 key 的 HashMap ，对应的值是一个 Linkedlist<Edge> 邻接表，存储了该顶点作为出度的所有边，
  */
-
-
-
 public class MyGraphAdjTable {
     public int VNum;  //顶点数目
     public int ENum;  //边的数目
@@ -25,50 +19,61 @@ public class MyGraphAdjTable {
     class Vertex{
         int key;  //顶点 key
         int value;  //顶点存储的数据
-        LinkedList<Edge> adj = new LinkedList<>();  //边集（邻接表）
+        List<Edge> adjEdges = new LinkedList<>();  //边集（邻接表）
         public Vertex(){}
         public Vertex(int key){ this.key = key; }
     }
 
     class Edge{
-        int key1, key2;  //
-        int data;  //边含有的数据
+        int key1, key2;  //顶点的key，分别属于顶点1，顶点2
+        int data;  //边含有的数据（如果有的话）
         int weight;  //边的权重
         public Edge(){}
         public Edge(int key1, int key2){ this.key1 = key1; this.key2 = key2; }
     }
 
     //增删顶点
-    public void addVertex(int key){ if(!vertices.containsKey(key)){ VNum++; } vertices.put(key, new Vertex(key)); } //添加不携带数据value的顶点
+    public void addVertex(int key){
+        if(!vertices.containsKey(key)) VNum++;
+        vertices.put(key, new Vertex(key));
+    } //添加不携带数据value的顶点
 
     //删除顶点与相邻的所有边
     public void delVertex(int key) {
         if (!vertices.containsKey(key)) return;  //没有此顶点
-        Vertex vertex = vertices.get(key);
-        VNum--;  //更新总顶点数
-        ENum = ENum - vertex.adj.size();  //更新总边数
-
-        //遍历 vertices 的邻接表，找到每个相连的 v2 顶点
-        for (Edge tempEdge : vertex.adj) {
-            if (tempEdge.key2 != key) {
-                //从顶点v2的邻接表中删除边 Edge(v2, v1)
-                LinkedList<Edge> edgeList = vertices.get(tempEdge.key2).adj;
-                Iterator<Edge> edgeIter = edgeList.iterator();
-                while(edgeIter.hasNext()){
-                    if (edgeIter.next().key2 == key) edgeIter.remove();
+        //移除所有相临边
+        for(Vertex vertexItem: vertices.values()){  //遍历全图所有顶点对象
+            for(Edge edgeItem: vertexItem.adjEdges){  //遍历顶点的所有邻接边
+                if(edgeItem.key1 == key || edgeItem.key2 == key){
+                    //////
                 }
             }
         }
+
         vertices.remove(key);
+
+        VNum--;  //更新总顶点数
+        ENum = ENum - vertices.get(key).adjEdges.size();  //更新总边数
     }
 
-    //无向无权图加边
-    public void addEdge(int v1, int v2){
-        if(!vertices.containsKey(v1) || !vertices.containsKey(v2)){ System.out.println("未录入相应顶点"); return; }
+    //有向无权图加边
+    public void addEdge(int key1, int key2){
+        if(!vertices.containsKey(key1) || !vertices.containsKey(key2)){ System.out.println("未录入相应顶点"); return; }
         //生成 Edge 对象
-        Edge newEdge = new Edge(v1, v2);
+        Edge newEdge = new Edge(key1, key2);
         //将新边 newEdge 加入图中，并更新边数量
-        vertices.get(v1).adj.add(newEdge); vertices.get(v2).adj.add(newEdge); this.ENum++;
+        vertices.get(key1).adjEdges.add(newEdge); vertices.get(key2).adjEdges.add(newEdge); this.ENum++;
+    }
+
+    //
+
+    //获取顶点的相邻顶点列表，用 List key 表示
+    public List<Integer> getAdjVertex(int key){
+        List<Integer> results = new ArrayList<>();
+        for(Edge edgeItem: vertices.get(key).adjEdges){
+            results.add(edgeItem.key2);
+        }
+        return results;
     }
 
     /********** 算法部分 **********/
@@ -82,7 +87,7 @@ public class MyGraphAdjTable {
         visitedVertex.add(root);  //未访问过，则加入set
         visit(root);  //访问顶点
         //根据邻接表，递归访问 v2 顶点
-        for(Edge edge: root.adj){
+        for(Edge edge: root.adjEdges){
             Vertex v2 = vertices.get(edge.key2);
             DFSRecur(v2);
         }
@@ -98,7 +103,7 @@ public class MyGraphAdjTable {
             visit(vertex);
             visitedVertex.add(vertex);
             //将顶点 vertex 的邻接表adj中的顶点按顺序入栈 assistStack
-            for(Edge edge: vertex.adj){
+            for(Edge edge: vertex.adjEdges){
                 Vertex v2 = vertices.get(edge.key2);
                 if(visitedVertex.contains(v2)) continue;
                 else assistStack.push(v2);
@@ -118,7 +123,7 @@ public class MyGraphAdjTable {
             Vertex vertex = queue.removeFirst();
             visit(vertex);
             visitedVertex.add(vertex);  //加入已访问顶点集
-            for(Edge edge: vertex.adj){
+            for(Edge edge: vertex.adjEdges){
                 Vertex v2 = vertices.get(edge.key2);
                 if(visitedVertex.contains(v2)) continue;
                 else queue.addLast(v2);
