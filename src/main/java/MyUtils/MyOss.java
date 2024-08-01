@@ -35,12 +35,12 @@ public class MyOss {
     private static final String file_delete_dir = "D:\\code\\OSS传文件\\2已删除文件回收站";  //删除的文件自动放入该本地回收站
 
     //新获取的 OSS 密钥放在这里，转化为 Base64 后要进行删除。
-    private static final String INIT_ACCESSKEYID = "";
-    private static final String INIT_ACCESSKEYSECRET = "";
+    private static final String INIT_ACCESSKEYID = "LTAI5t63J2mhHyAH8FB78yAd";
+    private static final String INIT_ACCESSKEYSECRET = "*****";
 
     //Base64 编码的 OSS 密钥。
-    public static final String AccessKeyIdBase64 =      "TFRBSTV0OHBlRENaWkFHYVZORG5LYWZy";
-    public static final String AccessKeySecretBase64 =  "WEpUaFVtd09VUFJDVVRpSW5zV2c2d3BBYTVYTGto";
+    public static final String AccessKeyIdBase64 = "TFRBSTV0NjNKMm1oSHlBSDhGQjc4eUFk";
+    public static final String AccessKeySecretBase64 = "Y0dTbFBZaHNVUlhyMEt4UWRVem1KTnFKOWd2TUVH";
 
     //系统运行时，将密钥解码后保存在这个类变量里。
     private static String AccessKeyId;
@@ -73,10 +73,12 @@ public class MyOss {
 
     /* ========== Begin 密钥获取，与登录处理 ========== */
     /** 将拷贝过来的原密钥 INIT_KEY 转化为 Base64 数据。*/
-    public static void myConvertInitKeyToBase64(){
+    public static void _myConvertInitKeyToBase64(){
         try{
-            System.out.println("Base64 of AccessKeyId: " + MyOss.AccessKeyIdBase64);
-            System.out.println("Base64 of AccessKeySecret: " + MyOss.AccessKeySecretBase64);
+            System.out.println("Base64 of AccessKeyId: " +
+                    Base64.getEncoder().encodeToString(MyOss.INIT_ACCESSKEYID.getBytes("utf-8")));
+            System.out.println("Base64 of AccessKeySecret: " +
+                    Base64.getEncoder().encodeToString(MyOss.INIT_ACCESSKEYSECRET.getBytes("utf-8")));
         }catch (Exception e){ e.printStackTrace(); }
     }
     /** 查看 OSS 账户和密钥（依托于 Base64 字符串）*/
@@ -300,6 +302,9 @@ public class MyOss {
 
     public static void main(String[] args){
         try{
+            //将明文字符串加密为 Base64 字符串
+//            MyOss._myConvertInitKeyToBase64();
+
             MyOss.initLogger();
             myInitAccountAccess(); //初始化一个 OSS 实例 MyOss.ossClient
 

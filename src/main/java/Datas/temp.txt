@@ -1,13 +1,72 @@
---default-auth	Authentication plugin to use	
---host	Host on which MySQL server is located	
---password	Password to use when connecting to server	
---password1	First multifactor authentication password to use when connecting to server	8.0.27
---password2	Second multifactor authentication password to use when connecting to server	8.0.27
---password3	Third multifactor authentication password to use when connecting to server	8.0.27
---pipe	Connect to server using named pipe (Windows only)	
---plugin-dir	Directory where plugins are installed	
---port	TCP/IP port number for connection	
---protocol	Transport protocol to use	
---shared-memory-base-name	Shared-memory name for shared-memory connections (Windows only)	
---socket	Unix socket file or Windows named pipe to use	
---user	MySQL user name to use when connecting to server
+static int ARRAY
+          标识一般 SQL 类型 ARRAY 的 Java 编程语言中的常量（有时称为类型代码）。
+static int BIGINT
+          标识一般 SQL 类型 BIGINT 的 Java 编程语言中的常量（有时称为类型代码）。
+static int BINARY
+          标识一般 SQL 类型 BINARY 的 Java 编程语言中的常量（有时称为类型代码）。
+static int BIT
+          标识一般 SQL 类型 BIT 的 Java 编程语言中的常量（有时称为类型代码）。
+static int BLOB
+          标识一般 SQL 类型 BLOB 的 Java 编程语言中的常量（有时称为类型代码）。
+static int BOOLEAN
+          标识一般 SQL 类型 BOOLEAN 的 Java 编程语言中的常量（有时称为类型代码）。
+static int CHAR
+          标识一般 SQL 类型 CHAR 的 Java 编程语言中的常量（有时称为类型代码）。
+static int CLOB
+          标识一般 SQL 类型 CLOB 的 Java 编程语言中的常量（有时称为类型代码）。
+static int DATALINK
+          标识一般 SQL 类型 DATALINK 的 Java 编程语言中的常量（有时称为类型代码）。
+static int DATE
+          标识一般 SQL 类型 DATE 的 Java 编程语言中的常量（有时称为类型代码）。
+static int DECIMAL
+          标识一般 SQL 类型 DECIMAL 的 Java 编程语言中的常量（有时称为类型代码）。
+static int DISTINCT
+          标识一般 SQL 类型 DISTINCT 的 Java 编程语言中的常量（有时称为类型代码）。
+static int DOUBLE
+          标识一般 SQL 类型 DOUBLE 的 Java 编程语言中的常量（有时称为类型代码）。
+static int FLOAT
+          标识一般 SQL 类型 FLOAT 的 Java 编程语言中的常量（有时称为类型代码）。
+static int INTEGER
+          标识一般 SQL 类型 INTEGER 的 Java 编程语言中的常量（有时称为类型代码）。
+static int JAVA_OBJECT
+          标识一般 SQL 类型 JAVA_OBJECT 的 Java 编程语言中的常量（有时称为类型代码）。
+static int LONGNVARCHAR
+          标识一般 SQL 类型 LONGNVARCHAR 的 Java 编程语言中的常量（有时称为类型代码）。
+static int LONGVARBINARY
+          标识一般 SQL 类型 LONGVARBINARY 的 Java 编程语言中的常量（有时称为类型代码）。
+static int LONGVARCHAR
+          标识一般 SQL 类型 LONGVARCHAR 的 Java 编程语言中的常量（有时称为类型代码）。
+static int NCHAR
+          标识一般 SQL 类型 NCHAR 的 Java 编程语言中的常量（有时称为类型代码）。
+static int NCLOB
+          标识一般 SQL 类型 NCLOB 的 Java 编程语言中的常量（有时称为类型代码）。
+static int NULL
+          标识一般 SQL 值 NULL 的 Java 编程语言中的常量。
+static int NUMERIC
+          标识一般 SQL 类型 NUMERIC 的 Java 编程语言中的常量（有时称为类型代码）。
+static int NVARCHAR
+          标识一般 SQL 类型 NVARCHAR 的 Java 编程语言中的常量（有时称为类型代码）。
+static int OTHER
+          Java 编程语言中的常量，该常量指示 SQL 类型是特定于数据库的并且被映射到可通过 getObject 和 setObject 方法访问的 Java 对象。
+static int REAL
+          标识一般 SQL 类型 REAL 的 Java 编程语言中的常量（有时称为类型代码）。
+static int REF
+          标识一般 SQL 类型 REF 的 Java 编程语言中的常量（有时称为类型代码）。
+static int ROWID
+          标识一般 SQL 类型 ROWID 的 Java 编程语言中的常量（有时称为类型代码）。
+static int SMALLINT
+          标识一般 SQL 类型 SMALLINT 的 Java 编程语言中的常量（有时称为类型代码）。
+static int SQLXML
+          标识一般 SQL 类型 XML 的 Java 编程语言中的常量（有时称为类型代码）。
+static int STRUCT
+          标识一般 SQL 类型 STRUCT 的 Java 编程语言中的常量（有时称为类型代码）。
+static int TIME
+          标识一般 SQL 类型 TIME 的 Java 编程语言中的常量（有时称为类型代码）。
+static int TIMESTAMP
+          标识一般 SQL 类型 TIMESTAMP 的 Java 编程语言中的常量（有时称为类型代码）。
+static int TINYINT
+          标识一般 SQL 类型 TINYINT 的 Java 编程语言中的常量（有时称为类型代码）。
+static int VARBINARY
+          标识一般 SQL 类型 VARBINARY 的 Java 编程语言中的常量（有时称为类型代码）。
+static int VARCHAR
+          标识一般 SQL 类型 VARCHAR 的 Java 编程语言中的常量（有时称为类型代码）。

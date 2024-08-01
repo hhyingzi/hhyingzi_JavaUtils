@@ -16,8 +16,8 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class MyIO {
-    private String dataFile = "D:\\code\\java\\hhyingzi_JavaUtils\\src\\main\\java\\Datas\\temp.txt";
-    private String outFile = "D:\\code\\java\\hhyingzi_JavaUtils\\src\\main\\java\\Datas\\temp2.txt";
+    private String dataFile = "E:\\hhcode\\java\\hhyingzi_JavaUtils\\src\\main\\java\\Datas\\temp.txt";
+    private String outFile = "E:\\hhcode\\java\\hhyingzi_JavaUtils\\src\\main\\java\\Datas\\temp2.txt";
 
     /*********** 控制台读取 ***********/
     /* 控制台按行读取方法1：Scanner。每行是一个 String，以空白行结束运行 */
